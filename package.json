@@ -1,0 +1,75 @@
+{
+  "name": "credential-front-end",
+  "version": "1.8.0",
+  "dependencies": {
+    "angular": "^1.6.0",
+    "angular-animate": "1.2.16",
+    "angular-chart.js": "^1.1.0",
+    "chart.js": "^2.4.0",
+    "jquery": "3.1.0",
+    "lodash": "^4.13.1",
+    "material-design-lite": "^1.3.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.5.7",
+    "angular-scenario": "1.5.7",
+    "autoprefixer": "^6.3.7",
+    "browserify": "^13.0.1",
+    "connect-modrewrite": "~0.9.0",
+    "cpx": "^1.3.2",
+    "cssmin": "^0.4.3",
+    "eslint": "^3.0.1",
+    "eslint-config-angular": "^0.5.0",
+    "eslint-config-google": "^0.6.0",
+    "eslint-plugin-angular": "^1.4.1",
+    "eslint-watch": "^2.1.13",
+    "exorcist": "^0.4.0",
+    "jshint-stylish": "^2.2.0",
+    "karma": "~0.13.22",
+    "karma-chrome-launcher": "~1.0.1",
+    "karma-jasmine": "~1.0.2",
+    "live-reload": "^1.1.0",
+    "ng-annotate": "~1.2.1",
+    "node-sass": "^3.8.0",
+    "npm-run-all": "^2.3.0",
+    "opener": "^1.4.1",
+    "postcss-cli": "^2.5.2",
+    "protractor": "~3.3.0",
+    "serve-static": "^1.11.1",
+    "superstatic": "^4.0.3",
+    "uglifyify": "^3.0.2",
+    "watch": "^0.19.1",
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "clean": "                rm -rf dist/ && mkdir dist && mkdir dist/scripts && mkdir dist/styles",
+    "sass": "                 node-sass app/ --output dist/ --source-map true --error-bell",
+
+    "build:js": "             npm-run-all --parallel build:js:*",
+    "build:js:libraries": "   browserify app/scripts/libraries.js              -t uglifyify --debug | exorcist dist/scripts/libraries.bundle.js.map              > dist/scripts/libraries.bundle.js",
+    "build:js:main": "        browserify app/scripts/main.js                   -t uglifyify --debug | exorcist dist/scripts/main.bundle.js.map                   > dist/scripts/main.bundle.js",
+    
+    "build:css": "            npm run sass && npm-run-all --parallel build:css:*",
+    "build:css:main": "       postcss --use autoprefixer --autoprefixer.browsers \"> 5%\" -o dist/styles/main.css      dist/styles/main.css      && cssmin dist/styles/main.css",
+    
+    "build:static": "         cpx 'app/**/*.{html,png,jpg,svg,gif,ico,xml,gz,json,eot,ttf,otf,woff,woff2}' dist --clean",
+    "build:scripts": "        cpx 'app/scripts/libraries/**/*' dist/scripts/libraries --clean",
+    "build:redirects": "      cp app/_redirects dist/_redirects",
+
+    "watch:lint": "           esw --color app/** --watch --cache",
+    "watch:sass": "           npm run sass -- --watch app/",
+    "watch:js-libraries": "   watchify app/scripts/libraries.js              --debug                          -o dist/scripts/libraries.bundle.js",
+    "watch:js-main": "        watchify app/scripts/main.js                   --debug --exclude ./libraries.js -o dist/scripts/main.bundle.js",
+    "watch:static": "         npm run build:scripts -- --watch",
+    "watch:scripts": "        npm run build:static -- --watch",
+
+    "open:prod": "            opener http://accredible.com",
+    "open:stage": "           opener http://dev.accredible.com",
+    "open:localhost": "       opener http://localhost:9123",
+    "live-reload": "          live-reload --port 9124 dist/",
+    "serve": "                superstatic dist --config superstatic.json --port 9123 --host localhost",
+    
+    "local": "                npm-run-all --sequential clean sass && npm-run-all --parallel watch:* live-reload serve open:localhost",
+    "production": "           npm-run-all --sequential clean build:*"
+  }
+}

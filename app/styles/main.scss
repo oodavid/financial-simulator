@@ -1,0 +1,21 @@
+@import "normalize";
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.hero {
+    padding: 1px 0;
+    background-color: #2196F3;
+    color: #fff;
+}
+.container {
+    width: 1000px;
+    margin: 0 auto 20px auto;
+}
+.hero .container {
+    padding: 16px;
+}
