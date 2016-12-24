@@ -1,146 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Fateful Choices -->
-    <title>Fateful Choices</title>
-    <!-- Styles -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-    <link rel="stylesheet" href="/styles/main.css">
-    <!--[if lt IE 9]>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/excanvas.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.js"></script>
-    <![endif]-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Fateful Choices -->
+	<title>Fateful Choices</title>
+	<!-- Styles -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-yellow.min.css">
+	<link rel="stylesheet" href="/styles/main.css">
+	<!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/excanvas.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.js"></script>
+	<![endif]-->
 </head>
 <body ng-app="fateful">
-    <!-- Header -->
-    <div class="hero">
-        <div class="container">
-            <h1>Fateful Choices</h1>
-            <p>Learn how the decisions you make affect your finances.</p>
-            <p>You cannot change your income, but you can choose your lifestyle!</p>
-            <p>The goal is to live a good life, and have enough left over for retirement.</p>
-        </div>
-    </div>
 
-    <div class="container">
-        <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Testing</h2>
-                </div>
-                <div class="mdl-card__supporting-text" ng-controller="LineCtrl">
-                    <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"></canvas>
-                </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                        Get Started
-                    </a>
-                </div>
-                <div class="mdl-card__menu">
-                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                        <i class="material-icons">share</i>
-                    </button>
-                </div>
-            </div>
-            <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Testing</h2>
-                </div>
-                <div class="mdl-card__supporting-text" ng-controller="RadarCtrl">
-                <canvas id="radar" class="chart chart-radar" chart-data="data" chart-options="options" chart-labels="labels"></canvas>
-                </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                        Get Started
-                    </a>
-                </div>
-                <div class="mdl-card__menu">
-                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                        <i class="material-icons">share</i>
-                    </button>
-                </div>
-            </div>
-            <div class="mdl-cell mdl-cell--4-col">4</div>
-        </div>
-    </div>
+	<div ng-controller="DemoCtrl">
 
-    <h1>Todo</h1>
-    <ul>
-        <li><strike>Task Runner / Environment</strike></li>
-        <li><strike>AngularJS</strike></li>
-        <li>Plan layout (paper)</li>
-        <li>Plan charts (see <a href="https://jtblin.github.io/angular-chart.js/">chart.js</a>)</li>
-        <li>Layout - see <a href="https://getmdl.io/components/index.html">docs</a></li>
-    </ul>
+		<!-- Income & Assets -->
+		<h1>Income &amp; Assets</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="asset in assets">
+					<th>{{ asset.name }}</th>
+					<td>{{ asset.value | currency }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- Expenditure & Liabilities -->
+		<h1>Expenditure &amp; Liabilities</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+					<th>Cost / Month</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="liability in liabilities">
+					<th>{{ liability.name }}</th>
+					<td>{{ liability.value | currency }}</td>
+					<td>--</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- Timeline -->
+		<h1>Timeline</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Incoming</th>
+					<th>Outgoing</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>--</th>
+					<td>--</td>
+					<td>--</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 
 
 
-    <h1>Career</h1>
-    <ul>
-        <li>Salary: £16,000</li>
-    </ul>
-    <h1>Decisions</h1>
-    <ul>
-        <li>car</li>
-        <ul>
-            <li>12y/o, £1,000 + £120.00 running costs</li>
-            <li>6y/o, £1,000 + £80.00 running costs</li>
-            <li>3y/o, £1,000 + £50.00 running costs</li>
-            <li>new, £25,000 + £70.00 running costs</li>
-            <li>lease</li>
-            <li>buy</li>
-            <li>sell</li>
-        </ul>
-        <li>house</li>
-        <ul>
-            <li>Prices increase over time (buy early)</li>
-            <li>parents</li>
-            <li>lease</li>
-            <li>buy</li>
-            <li>sell</li>
-        </ul>
-        <li>invest</li>
-        <ul>
-            <li>lump sym</li>
-            <li>recurring</li>
-        </ul>
-        <li>change lifestyle</li>
-        <ul>
-            <li>gym membership</li>
-            <li>movies</li>
-            <li>skiing holiday</li>
-            <li>summer holiday</li>
-            <li>weekend break</li>
-        </ul>
-    </ul>
-    <h1>Timeline</h1>
-    <ul>
-        <li>Promotion every 5 years</li>
-        <li>You met the love of your life! (extra income, extra outgoings, if you move in together)</li>
-        <li>Get married... choose the wedding</li>
-        <li>Would you like to start a family? (increases your outgoings)</li>
-        <li>Bitter Divorce (halves your assets)</li>
-        <li>Retire at 60</li>
-    </ul>
-    <h1>Status</h1>
-    <ul>
-        <li>Lost in Interest: £5,000</li>
-        <li>Earned in Interest: £27,000</li>
-        <li>Share Balance: £100,000</li>
-        <li>Bank Balance: £30,000</li>
-        <li>House: Small (this should inflate slightly)</li>
-        <li>Car: 6y/o, value: £1,543 (this should depreciate, show a graph?)</li>
-        <li>Lifestyle: Luxurious</li>
-        <li>Bankrupt in Retirement: No</li>
-    </ul>
+	<!-- Layout -->
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		<!-- Header -->
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<span class="mdl-layout-title">Title</span>
+				<div class="mdl-layout-spacer"></div>
+				<nav class="mdl-navigation">
+					<a class="mdl-navigation__link" href="">Link</a>
+					<a class="mdl-navigation__link" href="">Link</a>
+					<a class="mdl-navigation__link" href="">Link</a>
+					<a class="mdl-navigation__link" href="">Link</a>
+				</nav>
+			</div>
+		</header>
+		<!-- Content -->
+		<main class="mdl-layout__content">
+			<div class="page-content">
 
-    <!-- Scripts -->
-    <script src="/scripts/libraries.bundle.js"></script>
-    <script src="/scripts/main.bundle.js"></script>
+
+				<div class="mdl-grid">
+					<div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
+						<div class="mdl-card__title">
+							<h2 class="mdl-card__title-text">Fateful Choices</h2>
+						</div>
+						<div class="mdl-card__supporting-text">
+							<p>Learn how the decisions you make affect your finances.</p>
+							<p>You cannot change your income, but you can choose your lifestyle!</p>
+							<p>The goal is to live a good life, and have enough left over for retirement.</p>
+						</div>
+						<div class="mdl-card__actions mdl-card--border">
+							<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+								Lets Begin
+							</a>
+						</div>
+					</div>
+					<div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
+						<div class="mdl-card__title">
+							<h2 class="mdl-card__title-text">Wealth over Time</h2>
+						</div>
+						<div class="mdl-card__supporting-text" ng-controller="LineCtrl">
+							<canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"></canvas>
+						</div>
+						<div class="mdl-card__actions mdl-card--border">
+							<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+								Options
+							</a>
+						</div>
+						<div class="mdl-card__menu">
+							<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+								<i class="material-icons">share</i>
+							</button>
+						</div>
+					</div>
+					<div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
+						<div class="mdl-card__title">
+							<h2 class="mdl-card__title-text">Diversity</h2>
+						</div>
+						<div class="mdl-card__supporting-text" ng-controller="RadarCtrl">
+							<canvas id="radar" class="chart chart-radar" chart-data="data" chart-options="options" chart-labels="labels"></canvas>
+						</div>
+						<div class="mdl-card__actions mdl-card--border">
+							<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+								Options
+							</a>
+						</div>
+						<div class="mdl-card__menu">
+							<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+								<i class="material-icons">share</i>
+							</button>
+						</div>
+					</div>
+				</div>
+
+
+
+			<h1>Todo</h1>
+			<ul>
+					<li><strike>Task Runner / Environment</strike></li>
+					<li><strike>AngularJS</strike></li>
+					<li>Plan layout (paper)</li>
+					<li>Plan charts (see <a href="https://jtblin.github.io/angular-chart.js/">chart.js</a>)</li>
+					<li>Layout - see <a href="https://getmdl.io/components/index.html">docs</a></li>
+			</ul>
+
+
+
+
+			<h1>Career</h1>
+			<ul>
+					<li>Salary: £16,000</li>
+			</ul>
+			<h1>Decisions</h1>
+			<ul>
+					<li>car</li>
+					<ul>
+							<li>12y/o, £1,000 + £120.00 running costs</li>
+							<li>6y/o, £1,000 + £80.00 running costs</li>
+							<li>3y/o, £1,000 + £50.00 running costs</li>
+							<li>new, £25,000 + £70.00 running costs</li>
+							<li>lease</li>
+							<li>buy</li>
+							<li>sell</li>
+					</ul>
+					<li>house</li>
+					<ul>
+							<li>Prices increase over time (buy early)</li>
+							<li>parents</li>
+							<li>lease</li>
+							<li>buy</li>
+							<li>sell</li>
+					</ul>
+					<li>invest</li>
+					<ul>
+							<li>lump sym</li>
+							<li>recurring</li>
+					</ul>
+					<li>change lifestyle</li>
+					<ul>
+							<li>gym membership</li>
+							<li>movies</li>
+							<li>skiing holiday</li>
+							<li>summer holiday</li>
+							<li>weekend break</li>
+					</ul>
+			</ul>
+			<h1>Timeline</h1>
+			<ul>
+					<li>Promotion every 5 years</li>
+					<li>You met the love of your life! (extra income, extra outgoings, if you move in together)</li>
+					<li>Get married... choose the wedding</li>
+					<li>Would you like to start a family? (increases your outgoings)</li>
+					<li>Bitter Divorce (halves your assets)</li>
+					<li>Retire at 60</li>
+			</ul>
+			<h1>Status</h1>
+			<ul>
+					<li>Lost in Interest: £5,000</li>
+					<li>Earned in Interest: £27,000</li>
+					<li>Share Balance: £100,000</li>
+					<li>Bank Balance: £30,000</li>
+					<li>House: Small (this should inflate slightly)</li>
+					<li>Car: 6y/o, value: £1,543 (this should depreciate, show a graph?)</li>
+					<li>Lifestyle: Luxurious</li>
+					<li>Bankrupt in Retirement: No</li>
+			</ul>
+
+
+
+
+
+
+
+			</div>
+		</main>
+	</div>
+
+
+
+	<!-- Scripts -->
+	<script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	<script src="/scripts/libraries.bundle.js"></script>
+	<script src="/scripts/main.bundle.js"></script>
 </body>
 </html>

@@ -19,3 +19,32 @@ html {
 .hero .container {
     padding: 16px;
 }
+
+
+table {
+    border-collapse: collapse;
+    white-space: nowrap;
+    th,
+    td {
+        padding: 4px 6px;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    thead {
+        th {
+            text-align: left;
+        }
+    }
+    tbody {
+        td {
+            text-align: right;
+            font-family: monospace;
+        }
+        th {
+            text-align: left;
+        }
+    }
+    .text {
+        text-align: left;
+        font-family: inherit;
+    }
+}

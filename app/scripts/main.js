@@ -13,4 +13,5 @@
  *      @author   David 'oodavid' King
  */
 require('./app.js');
+require('./financeFactory.js');
 require('./demo.js');
