@@ -125,9 +125,6 @@ angular.module('fateful')
               - IPMT(rate, period, number_of_periods, present_value, future_value, end_or_beginning);
     };
 
-
-
-
     return {
         PMT:  PMT,
         FV:   FV,

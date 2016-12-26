@@ -21,58 +21,117 @@
 	<div ng-controller="DemoCtrl">
 
 		<!-- Income & Assets -->
-		<h1>Income &amp; Assets</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Value</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="asset in assets">
-					<th>{{ asset.name }}</th>
-					<td>{{ asset.value | currency }}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div style="float: left; margin: 20px;">
+			<h1>Income &amp; Assets</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="asset in assets">
+						<th>{{ asset.name }}</th>
+						<td>{{ asset.value | currency }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<!-- Expenditure & Liabilities -->
-		<h1>Expenditure &amp; Liabilities</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Value</th>
-					<th>Cost / Month</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="liability in liabilities">
-					<th>{{ liability.name }}</th>
-					<td>{{ liability.value | currency }}</td>
-					<td>--</td>
-				</tr>
-			</tbody>
-		</table>
+		<div style="float: left; margin: 20px;">
+			<h1>Expenditure &amp; Liabilities</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Value</th>
+						<th>Cost / Month</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="liability in liabilities">
+						<th>{{ liability.name }}</th>
+						<td>{{ liability.value | currency }}</td>
+						<td>--</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<!-- Timeline -->
-		<h1>Timeline</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th>Incoming</th>
-					<th>Outgoing</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th>--</th>
-					<td>--</td>
-					<td>--</td>
-				</tr>
-			</tbody>
-		</table>
+		<div style="float: left; margin: 20px;">
+			<h1>Timeline</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Incoming</th>
+						<th>Outgoing</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>--</th>
+						<td>--</td>
+						<td>--</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- Amortization -->
+		<div style="float: left; margin: 20px;">
+			<h1>Loan</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Amount</th>
+						<th>Interest (APR)</th>
+						<th>Term</th>
+						<th>Start</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>{{ loan.amount }}</th>
+						<td>{{ loan.apr | percentage }}</td>
+						<td>{{ loan.term }}</td>
+						<td>{{ loan.start | date : 'dd/MM/yyyy' }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table>
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Start Balance</th>
+						<th>Payment</th>
+						<th>Interest</th>
+						<th>Overpayment</th>
+						<th>Principal</th>
+						<th>End Balance</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="payment in loan.payments">
+						<th>{{ $index }}</th>
+						<td>{{ payment.start_balance | currency }}
+						<td>{{ payment.payment | currency }}
+						<td>{{ payment.interest | currency }}
+						<td>{{ payment.overpayment | currency }}
+						<td>{{ payment.principal | currency }}
+						<td>{{ payment.end_balance | currency }}
+					</tr>
+				</tbody>
+			</table>
+			<button ng-click="addRow(loan);">add row</button>
+			<button ng-click="addRow(loan, 1000);">add row with overpayment</button>
+		</div>
+		<pre>
+PMT - {{ PMT((0.025/12), 24, 6000) }} (expect -256.5623533)
+</pre>
 	</div>
+
+	<div style="clear: both;"></div>
 
 
 

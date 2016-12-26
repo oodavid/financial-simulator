@@ -18,12 +18,44 @@ angular.module('fateful')
   $scope.assets = [
     { name: 'salary', value: '1200' }
   ];
+  //
+  // Loan / Amortization example
+  //
+  $scope.loan = {
+    amount: 100000,
+    apr: 0.045,
+    term: 300,
+    start: new Date(),
+    payments: []
+  };
+  $scope.addRow = function(loan, overpayment){
+    var l = loan.payments.length;
+    var start_balance = (l ? loan.payments[l-1].end_balance : loan.amount);
+    var interest = start_balance * (loan.apr/12);
+    var payment = -financeFactory.PMT(loan.apr/12, loan.term, loan.amount);
+    var overpayment = overpayment || 0;
+    var principal = payment + overpayment - interest;
+    var end_balance = start_balance - principal;
+    loan.payments.push({
+      start_balance: start_balance,
+      payment: payment,
+      interest: interest,
+      overpayment: overpayment,
+      principal: principal,
+      end_balance: end_balance,
+    });
+  };
+  // Add a bunch of rows
+  for(var i=0; i<10; i++){
+    $scope.addRow($scope.loan);
+  }
 
   
   // https://support.google.com/docs/answer/3093185
   //   Payment on a 145,000 loan at 5% over 25 years
+  $scope.PMT = financeFactory.PMT;
   var pmt = financeFactory.PMT((0.025/12), 24, 6000);
-  console.log(pmt); // expect  -256.5623533  
+  console.log(pmt); // expect  -256.5623533
   // https://support.google.com/docs/answer/3093224
   var fv = financeFactory.FV(0.03, 5, -500, -7000);
   console.log(fv); // expect  10769.48643
@@ -32,7 +64,7 @@ angular.module('fateful')
   console.log(ipmt); // expect  -62.5
   // https://support.google.com/docs/answer/3093187
   var ppmt = financeFactory.PPMT((0.075/12), 3, 24, 5000, 0, 1);
-  console.log(ppmt); // expect  -194.958888 
+  console.log(ppmt); // expect  -194.958888
 
 
   /*
