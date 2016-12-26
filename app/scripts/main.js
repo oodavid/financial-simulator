@@ -14,5 +14,6 @@
  */
 require('./app.js');
 require('./filters.js');
-require('./financeFactory.js');
+require('./financeService.js');
+require('./LoanFactory.js');
 require('./demo.js');

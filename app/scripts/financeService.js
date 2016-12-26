@@ -11,7 +11,7 @@
  *      @author   David 'oodavid' King
  */
 angular.module('fateful')
-.factory('financeFactory', function() {
+.service('financeService', function() {
 
     /** PMT
      *
@@ -26,7 +26,7 @@ angular.module('fateful')
      *      @param  future_value       -  [ OPTIONAL - 0 by default ] - The future value remaining after the final payment has been made.
      *      @param  end_or_beginning   -  [ OPTIONAL - 0 by default ] - Whether payments are due at the end (0) or beginning (1) of each period.
      */
-    var PMT = function(rate, number_of_periods, present_value, future_value, end_or_beginning){
+    this.PMT = function(rate, number_of_periods, present_value, future_value, end_or_beginning){
         // Default values
         future_value     = future_value || 0;
         end_or_beginning = end_or_beginning || 0;
@@ -54,7 +54,7 @@ angular.module('fateful')
      *      @param  present_value      -  The current value of the annuity.
      *      @param  end_or_beginning   -  [ OPTIONAL - 0 by default ] - Whether payments are due at the end (0) or beginning (1) of each period.
      */
-    var FV = function(rate, number_of_periods, payment_amount, present_value, end_or_beginning) {
+    this.FV = function(rate, number_of_periods, payment_amount, present_value, end_or_beginning) {
         // Default values
         end_or_beginning = end_or_beginning || 0;
         // Account for payments at beginning of period versus end
@@ -83,14 +83,14 @@ angular.module('fateful')
      *      @param  future_value       -  [ OPTIONAL - 0 by default ] - The future value remaining after the final payment has been made.
      *      @param  end_or_beginning   -  [ OPTIONAL - 0 by default ] - Whether payments are due at the end (0) or beginning (1) of each period.
      */
-    var IPMT = function(rate, period, number_of_periods, present_value, future_value, end_or_beginning) {
+    this.IPMT = function(rate, period, number_of_periods, present_value, future_value, end_or_beginning) {
         // Default values
         future_value     = future_value || 0;
         end_or_beginning = end_or_beginning || 0;
         // Prior period (i.e., per-1) balance times periodic interest rate.
         // i.e., ipmt = fv(r, per-1, c, pv, type) * r
         // where c = pmt(r, nper, pv, fv, type)
-        var ipmt = FV(rate, period - 1, PMT(rate, number_of_periods, present_value, future_value, end_or_beginning), present_value, end_or_beginning) * rate;
+        var ipmt = this.FV(rate, period - 1, this.PMT(rate, number_of_periods, present_value, future_value, end_or_beginning), present_value, end_or_beginning) * rate;
         // account for payments at beginning of period versus end.
         if (end_or_beginning == 1){
             ipmt /= (1 + rate);
@@ -113,7 +113,7 @@ angular.module('fateful')
      *      @param  future_value       -  [ OPTIONAL - 0 by default ] - The future value remaining after the final payment has been made.
      *      @param  end_or_beginning   -  [ OPTIONAL - 0 by default ] - Whether payments are due at the end (0) or beginning (1) of each period.
      */
-    var PPMT = function(rate, period, number_of_periods, present_value, future_value, end_or_beginning){
+    this.PPMT = function(rate, period, number_of_periods, present_value, future_value, end_or_beginning){
         // Default values
         future_value     = future_value || 0;
         end_or_beginning = end_or_beginning || 0;
@@ -121,14 +121,7 @@ angular.module('fateful')
         // i.e., ppmt = c - i
         // where c = pmt(r, nper, pv, fv, type)
         // and i = ipmt(r, per, nper, pv, fv, type)
-        return PMT(rate, number_of_periods, present_value, future_value, end_or_beginning)
-              - IPMT(rate, period, number_of_periods, present_value, future_value, end_or_beginning);
-    };
-
-    return {
-        PMT:  PMT,
-        FV:   FV,
-        IPMT: IPMT,
-        PPMT: PPMT,
+        return this.PMT(rate, number_of_periods, present_value, future_value, end_or_beginning)
+              - this.IPMT(rate, period, number_of_periods, present_value, future_value, end_or_beginning);
     };
 });
