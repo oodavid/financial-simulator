@@ -14,12 +14,8 @@ angular.module('fateful')
         this.term     = props.term;
         this.start    = new Date();
         this.payments = [];
-
-
-        // Add a bunch of rows
-        for(var i=0; i<10; i++){
-            this.addRow();
-        }
+        // Calculate the lifetime payments
+        this.lifetime();
 
 
         this.chart = {};
@@ -56,11 +52,24 @@ angular.module('fateful')
     Loan.prototype.addRow = function(overpayment){
         var l = this.payments.length;
         var start_balance = (l ? this.payments[l-1].end_balance : this.amount);
+        if(start_balance <= 0){
+            return; // No need for an extra row, we're done
+        }
         var interest = start_balance * (this.apr/12);
         var payment = -financeService.PMT(this.apr/12, this.term, this.amount);
         var overpayment = overpayment || 0;
         var principal = payment + overpayment - interest;
         var end_balance = start_balance - principal;
+        // Make sure we don't pay too much
+        if(end_balance < 0){
+            overpayment += end_balance;
+            if(overpayment < 0){
+                payment += overpayment;
+                overpayment = 0;
+            }
+            principal = payment + overpayment - interest;
+            end_balance = 0;
+        }
         this.payments.push({
             start_balance: start_balance,
             payment: payment,
@@ -69,6 +78,16 @@ angular.module('fateful')
             principal: principal,
             end_balance: end_balance,
         });
+    };
+    // Adds a row to the payments list
+    Loan.prototype.lifetime = function(overpayment){
+        for(var i=0; i<this.term; i++){
+            this.addRow(100);
+            var l = this.payments.length;
+            if(this.payments[l-1].end_balance <= 0){
+                break;
+            }
+        }
     };
     // And return
     return Loan;
