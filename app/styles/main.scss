@@ -38,7 +38,7 @@ table {
     tbody {
         td {
             text-align: right;
-            font-family: monospace;
+            font-family: 'Inconsolata', monospace;
         }
         th {
             text-align: left;
@@ -48,4 +48,8 @@ table {
         text-align: left;
         font-family: inherit;
     }
+}
+
+#date {
+    font-family: 'Inconsolata', monospace;
 }

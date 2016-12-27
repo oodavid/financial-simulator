@@ -9,6 +9,7 @@
 	<!-- Styles -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.green-yellow.min.css">
 	<link rel="stylesheet" href="/styles/main.css">
 	<!--[if lt IE 9]>
@@ -19,64 +20,21 @@
 <body ng-app="fateful">
 
 	<div ng-controller="DemoCtrl">
-
-		<!-- Income & Assets -->
+		<!-- Tick -->
 		<div style="float: left; margin: 20px;">
-			<h1>Income &amp; Assets</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="asset in assets">
-						<th>{{ asset.name }}</th>
-						<td>{{ asset.value | currency }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- Expenditure & Liabilities -->
-		<div style="float: left; margin: 20px;">
-			<h1>Expenditure &amp; Liabilities</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Value</th>
-						<th>Cost / Month</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="liability in liabilities">
-						<th>{{ liability.name }}</th>
-						<td>{{ liability.value | currency }}</td>
-						<td>--</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- Timeline -->
-		<div style="float: left; margin: 20px;">
-			<h1>Timeline</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Incoming</th>
-						<th>Outgoing</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>--</th>
-						<td>--</td>
-						<td>--</td>
-					</tr>
-				</tbody>
-			</table>
+			<h1 id="date">{{ loop.date | date : 'MMM, yyyy' }}</h1>
+			<p>Age: {{ loop.age | toYears }}</p>
+			<p>Elapsed: {{ loop.elapsed | toYears }}</p>
+			<p>Retirement in: {{ loop.remaining | toYears }}</p>
+			<p>
+				<button ng-disabled="loop.isPlaying" ng-click="loop.play()">play</button>
+				<button ng-disabled="loop.isPaused" ng-click="loop.pause()">pause</button>
+				<button ng-disabled="loop.speed == 5000" ng-click="loop.setSpeed(5000)">&raquo;</button>
+				<button ng-disabled="loop.speed == 1000" ng-click="loop.setSpeed(1000)">&raquo;&raquo;</button>
+				<button ng-disabled="loop.speed == 200" ng-click="loop.setSpeed(200)">&raquo;&raquo;&raquo;</button>
+				<button ng-disabled="loop.speed == 50" ng-click="loop.setSpeed(50)">&raquo;&raquo;&raquo;&raquo;</button>
+				<button ng-disabled="loop.isPlaying" ng-click="loop.tick()">tick</button>
+			</p>
 		</div>
 		<!-- Amortization -->
 		<div style="float: left; margin: 20px;">
@@ -137,9 +95,64 @@
 			<button ng-click="loan.addRow();">add row</button>
 			<button ng-click="loan.addRow(1000);">add row with overpayment</button>
 		</div>
-		<pre>
-PMT - {{ PMT((0.025/12), 24, 6000) }} (expect -256.5623533)
-</pre>
+		<!-- Income & Assets -->
+		<div style="float: left; margin: 20px;">
+			<h1>Income &amp; Assets</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="asset in assets">
+						<th>{{ asset.name }}</th>
+						<td>{{ asset.value | currency }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- Expenditure & Liabilities -->
+		<div style="float: left; margin: 20px;">
+			<h1>Expenditure &amp; Liabilities</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Value</th>
+						<th>Cost / Month</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="liability in liabilities">
+						<th>{{ liability.name }}</th>
+						<td>{{ liability.value | currency }}</td>
+						<td>--</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- Timeline -->
+		<div style="float: left; margin: 20px;">
+			<h1>Timeline</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Incoming</th>
+						<th>Outgoing</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>--</th>
+						<td>--</td>
+						<td>--</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<div style="clear: both;"></div>

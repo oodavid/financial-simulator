@@ -11,7 +11,7 @@
  *      @author   David 'oodavid' King
  */
 angular.module('fateful')
-.service('financeService', function() {
+.service('financeService', [function() {
 
     /** PMT
      *
@@ -124,4 +124,4 @@ angular.module('fateful')
         return this.PMT(rate, number_of_periods, present_value, future_value, end_or_beginning)
               - this.IPMT(rate, period, number_of_periods, present_value, future_value, end_or_beginning);
     };
-});
+}]);

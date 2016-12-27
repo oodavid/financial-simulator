@@ -6,7 +6,7 @@
  *      @author   David 'oodavid' King
  */
 angular.module('fateful')
-.controller("DemoCtrl", ['$scope', 'Loan', 'financeService', function ($scope, Loan, financeService){
+.controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'financeService', function ($scope, gameLoop, Loan, financeService){
 
     $scope.liabilities = [
         { name: 'house',   value: '240000', loan: { type: 'interest-only', interest: 3, term: 300 } }, // 25 years * 12 months
@@ -18,9 +18,9 @@ angular.module('fateful')
     $scope.assets = [
         { name: 'salary', value: '1200' }
     ];
-    //
-    // Loan / Amortization example
-    //
+    // GameLoop
+    $scope.loop = gameLoop;
+    // Loan / Amortization
     $scope.loan = new Loan({
         amount: 100000,
         apr:    0.045,
