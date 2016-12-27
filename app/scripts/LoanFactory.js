@@ -6,7 +6,7 @@
  *      @author   David 'oodavid' King
  */
 angular.module('fateful')
-.factory('Loan', ['financeService', function(financeService){
+.factory('Loan', ['financeService', 'ledgerService', function(financeService, ledgerService){
     // Instantiation
     function Loan(props) {
         this.amount   = props.amount;
@@ -70,6 +70,7 @@ angular.module('fateful')
             principal = payment + overpayment - interest;
             end_balance = 0;
         }
+        // Add to our payments list
         this.payments.push({
             start_balance: start_balance,
             payment: payment,
@@ -77,6 +78,13 @@ angular.module('fateful')
             overpayment: overpayment,
             principal: principal,
             end_balance: end_balance,
+        });
+        // Add the changes to the ledger
+        ledgerService.track({
+            type: 'loan',
+            name: 'An Unnamed Loan',
+            value: (payment+overpayment),
+            interest: interest
         });
     };
     // Adds a row to the payments list
