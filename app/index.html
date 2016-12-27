@@ -29,12 +29,37 @@
 			<p>
 				<button ng-disabled="loop.isPlaying" ng-click="loop.play()">play</button>
 				<button ng-disabled="loop.isPaused" ng-click="loop.pause()">pause</button>
+				<button ng-disabled="loop.isPlaying" ng-click="loop.tick()">tick (WIP)</button>
+				<br>
 				<button ng-disabled="loop.speed == 5000" ng-click="loop.setSpeed(5000)">&raquo;</button>
 				<button ng-disabled="loop.speed == 1000" ng-click="loop.setSpeed(1000)">&raquo;&raquo;</button>
 				<button ng-disabled="loop.speed == 200" ng-click="loop.setSpeed(200)">&raquo;&raquo;&raquo;</button>
 				<button ng-disabled="loop.speed == 50" ng-click="loop.setSpeed(50)">&raquo;&raquo;&raquo;&raquo;</button>
-				<button ng-disabled="loop.isPlaying" ng-click="loop.tick()">tick</button>
 			</p>
+		</div>
+		<!-- Ledger -->
+		<div style="float: left; margin: 20px;">
+			<h1>Ledger</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Type</th>
+						<th>Name</th>
+						<th>Value</th>
+						<th>Interest</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="entry in ledger.ledger">
+						<td>{{ entry.date | date : 'dd/MM/yyyy' }}</td>
+						<td>{{ entry.type }}</td>
+						<td>{{ entry.name }}</td>
+						<td>{{ entry.value | currency }}</td>
+						<td>{{ entry.interest | currency }}</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<!-- Amortization -->
 		<div style="float: left; margin: 20px;">

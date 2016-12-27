@@ -6,7 +6,7 @@
  *      @author   David 'oodavid' King
  */
 angular.module('fateful')
-.controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'financeService', function ($scope, gameLoop, Loan, financeService){
+.controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'financeService', 'ledgerService', function ($scope, gameLoop, Loan, financeService, ledgerService){
 
     $scope.liabilities = [
         { name: 'house',   value: '240000', loan: { type: 'interest-only', interest: 3, term: 300 } }, // 25 years * 12 months
@@ -18,23 +18,23 @@ angular.module('fateful')
     $scope.assets = [
         { name: 'salary', value: '1200' }
     ];
-    // GameLoop
+    // Hoist the GameLoop and Ledger
     $scope.loop = gameLoop;
-    // Loan / Amortization
+    $scope.ledger = ledgerService;
+    // Create a demo Loan object
     $scope.loan = new Loan({
         amount: 100000,
         apr:    0.045,
         term:   300,
     });
-
-
-
-
-
-
     
+
+
+
+    //
+    // Test the financeService logic
+    //
     // https://support.google.com/docs/answer/3093185
-    //   Payment on a 145,000 loan at 5% over 25 years
     $scope.PMT = financeService.PMT;
     var pmt = financeService.PMT((0.025/12), 24, 6000);
     console.log(pmt); // expect  -256.5623533
@@ -72,6 +72,21 @@ angular.module('fateful')
     */
 
 }])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .controller("LineCtrl", ['$scope', function ($scope) {
 
     $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
