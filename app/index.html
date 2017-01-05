@@ -17,24 +17,66 @@
 	<link rel="stylesheet" href="/styles/main.css">
 </head>
 <body ng-app="fateful">
+	<div class="container" ng-controller="DemoCtrl">
 
-	<div ng-controller="DemoCtrl">
+		<hr>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card">
+					<!-- The Date -->
+					<h1 id="today">
+						<span class="glyphicon glyphicon-calendar"></span>
+						{{ loop.date | date : 'MMM yyyy' }}
+					</h1>
+					<!-- Tick Controller -->
+					<p>
+						<div class="btn-group btn-group-justified">
+							<a href="" class="btn btn-default" ng-click="loop.play()" ng-class="{ 'btn-primary': loop.isPlaying }" ng-tooltip="Play">
+								<span class="glyphicon glyphicon-play"></span>
+							</a>
+							<a href="" class="btn btn-default" ng-click="loop.pause()" ng-class="{ 'btn-primary': loop.isPaused }" ng-tooltip="Pause">
+								<span class="glyphicon glyphicon-pause"></span>
+							</a>
+							<a href="" class="btn btn-default" ng-click="loop.tick()" ng-tooltip="Step forward 1 Month">
+								<span class="glyphicon glyphicon-step-forward"></span>
+							</a>
+							<a href="" class="btn btn-default" ng-click="loop.setSpeed(1000)" ng-class="{ 'active': loop.speed == 1000 }" ng-tooltip="Speed: Tortoise">
+								(1)
+							</a>
+							<a href="" class="btn btn-default" ng-click="loop.setSpeed(200)"  ng-class="{ 'active': loop.speed == 200 }" ng-tooltip="Speed: Hare">
+								(2)
+							</a>
+							<a href="" class="btn btn-default" ng-click="loop.setSpeed(50)"   ng-class="{ 'active': loop.speed == 50 }" ng-tooltip="Speed: Life's too short">
+								(3)
+							</a>
+						</div>
+					</p>
+					<!-- Progress Meter -->
+					<div class="progress">
+						<div class="progress-bar" ng-style="{ width: getProgress() }"></div>
+					</div>
+					<!-- Age and Retirement -->
+					<p>
+						<span>Age: {{ loop.age | toYears }}</span>
+						<span class="pull-right">Retirement in: {{ loop.remaining | toYears }}</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card card-1">
+					<h1>hello</h1>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card card-1">
+					<h1>hello</h1>
+				</div>
+			</div>
+		</div>
+
 		<!-- Tick -->
 		<div style="float: left; margin: 20px;">
-			<h1 id="date">{{ loop.date | date : 'MMM, yyyy' }}</h1>
-			<p>Age: {{ loop.age | toYears }}</p>
-			<p>Elapsed: {{ loop.elapsed | toYears }}</p>
-			<p>Retirement in: {{ loop.remaining | toYears }}</p>
-			<p>
-				<button ng-disabled="loop.isPlaying" ng-click="loop.play()">play</button>
-				<button ng-disabled="loop.isPaused" ng-click="loop.pause()">pause</button>
-				<button ng-disabled="loop.isPlaying" ng-click="loop.tick()">tick (WIP)</button>
-				<br>
-				<button ng-disabled="loop.speed == 5000" ng-click="loop.setSpeed(5000)">&raquo;</button>
-				<button ng-disabled="loop.speed == 1000" ng-click="loop.setSpeed(1000)">&raquo;&raquo;</button>
-				<button ng-disabled="loop.speed == 200" ng-click="loop.setSpeed(200)">&raquo;&raquo;&raquo;</button>
-				<button ng-disabled="loop.speed == 50" ng-click="loop.setSpeed(50)">&raquo;&raquo;&raquo;&raquo;</button>
-			</p>
 		</div>
 		<!-- Ledger -->
 		<div style="float: left; margin: 20px;">

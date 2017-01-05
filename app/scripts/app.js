@@ -5,4 +5,6 @@
  *
  *      @author   David 'oodavid' King
  */
-angular.module('fateful', ['chart.js']);
+(function(){
+	angular.module('fateful', ['chart.js', 'ngTooltips']);
+})();
