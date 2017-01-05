@@ -1,0 +1,91 @@
+/** ANGULAR TOOLTIP
+ *
+ *    We have a single tooltip element that is recycled
+ *     throughout the entire site. This is to style said
+ *     element.
+ *
+ *    @author   David "oodavid" King
+ */
+$ng-tooltip-grey: #333333;
+#ngTooltip {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2000;
+
+    padding: 4px 10px;
+    max-width: 240px;
+
+    background-color: $ng-tooltip-grey;
+    border-radius: 4px;
+
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 300;
+
+    white-space: pre-wrap; // Allow newlines
+
+    // The arrow
+    &:before {
+        content: "";
+        position: absolute;
+        z-index: 2001;
+        border: solid;
+    }
+    // Basic arrows and offsets
+    &.top {
+        margin: -6px 0 6px 0;
+        &:before {
+            border-width: 6px 6px 0 6px;
+            bottom: -6px;
+        }
+    }
+    &.bottom {
+        margin: 6px 0 -6px 0;
+        &:before {
+            border-width: 0 6px 6px 6px;
+            top: -6px;
+        }
+    }
+    &.left {
+        margin: 0 6px 0 -6px;
+        &:before {
+            border-width: 6px 0 6px 6px;
+            right: -6px;
+        }
+    }
+    &.right {
+        margin: 0 -6px 0 6px;
+        &:before {
+            border-width: 6px 6px 6px 0;
+            left: -6px;
+        }
+    }
+    // Top and bottom have horizontal centering for the arrow
+    &.top,
+    &.bottom {
+        &:before {
+            border-color: $ng-tooltip-grey transparent;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+               -moz-transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                 -o-transform: translateX(-50%);
+                    transform: translateX(-50%);
+        }
+    }
+    // Left and right have vertical centering for the arrow
+    &.left,
+    &.right {
+        &:before {
+            border-color: transparent $ng-tooltip-grey;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+               -moz-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                 -o-transform: translateY(-50%);
+                    transform: translateY(-50%);
+        }
+    }
+}

@@ -12,6 +12,7 @@
  *
  *      @author   David 'oodavid' King
  */
+require('./ngTooltips/ngTooltips.js');
 require('./app.js');
 require('./filters.js');
 require('./gameLoopService.js');
