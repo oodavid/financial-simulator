@@ -30,16 +30,18 @@
 		// Reset with text immediately, then we can access the rendered tooltip dimensions
 		text = text.replace(/\\n/g, '\n'); // Make sure "\\n" are converted to "\n"
 		$('#ngTooltip').text(text).removeClass('top right bottom left').css({ left: 0, top: 0 }).show();
-		// Magic placement for top and bottom
+		// Magic placement
 		if(placement === 'top' || placement === 'bottom'){
-			var centreX = offset.left+(target.outerWidth()/2);			
-			var centreY = offset.top+(target.outerHeight()/2);
-			var left  = centreX-(tooltip.outerWidth()/2);
-			var right = centreX+(tooltip.outerWidth()/2);
+			var centreX = offset.left+(target.outerWidth()/2);
+			var left    = centreX-(tooltip.outerWidth()/2);
+			var right   = centreX+(tooltip.outerWidth()/2);
+			var top     = offset.top - tooltip.outerHeight();
 			if(left < 0){
 				placement = 'right';
 			} else if(right > $('body').innerWidth()){
 				placement = 'left';
+			} else if(placement == 'top' && top < 0){
+				placement = 'bottom';
 			}
 		}
 		// Now position

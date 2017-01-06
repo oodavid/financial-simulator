@@ -31,7 +31,7 @@
 				<!-- Loop -->
 				<div class="card">
 					<h2>
-						<span class="glyphicon glyphicon-globe"></span>
+						<span class="glyphicon glyphicon-globe" ng-tooltip="Money maketh man\nManners maketh Gentleman"></span>
 						<span class="mono">{{ loop.date | date : 'MMM' }}</span>
 						{{ loop.date | date : 'yyyy' }}
 					</h2>
@@ -84,7 +84,7 @@
 				<!-- Bank -->
 				<div class="card">
 					<h2>
-						<span class="glyphicon glyphicon-piggy-bank"></span>
+						<span class="glyphicon glyphicon-piggy-bank" ng-tooltip="Squeal like a pig!!"></span>
 						The Bank
 					</h2>
 					<div>
@@ -127,8 +127,8 @@
 				<!-- Income -->
 				<div class="card">
 					<h2>
-						<span class="glyphicon glyphicon-briefcase"></span>
-						<span class="glyphicon glyphicon-education"></span>
+						<span class="glyphicon glyphicon-briefcase" ng-if="true"  ng-tooltip="Salaryman. That's the life for me"></span>
+						<span class="glyphicon glyphicon-education" ng-if="false" ng-tooltip="Buy High! Sell Low!... right?"></span>
 						Income
 					</h2>
 					<div>
@@ -160,6 +160,7 @@
 				<!-- Liabilities -->
 				<div class="card">
 					<h2>
+						<span class="glyphicon glyphicon-glass" ng-tooltip="Much obliged"></span>
 						Liabilities
 					</h2>
 					<div>
@@ -188,6 +189,20 @@
 
 
 
+				<!-- Portfolio -->
+				<div class="card" ng-controller="RadarCtrl">
+					<h2>
+						<span class="glyphicon glyphicon-book" ng-tooltip="Bet the spread."></span>
+						Portfolio Diversity
+					</h2>
+					<div>
+						<canvas id="radar" class="chart chart-radar" chart-data="data" chart-options="options" chart-labels="labels"></canvas>
+					</div>
+				</div>
+
+
+
+
 
 
 			</div>
@@ -209,7 +224,7 @@
 				<!-- Timeline -->
 				<div class="card">
 					<h2>
-						<span class="glyphicon glyphicon-time"></span>
+						<span class="glyphicon glyphicon-time" ng-tooltip="Time and tide wait for no man"></span>
 						Timeline
 					</h2>
 					<div>
@@ -290,43 +305,12 @@
 				</div>
 
 
-				<!-- Ledger -->
-				<div class="card">
-					<h2>
-						<span class="glyphicon glyphicon-equalizer"></span>
-						Ledger
-					</h2>
-					<div>
-						<table>
-							<thead>
-								<tr>
-									<th>Date</th>
-									<th>Type</th>
-									<th>Name</th>
-									<th>Value</th>
-									<th>Interest</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="entry in ledger.ledger | limitTo:12">
-									<td>
-										<span class="mono">{{ entry.date | date : 'MMM' }}</span>
-										{{ entry.date | date : 'yyyy' }}
-									</td>
-									<td>{{ entry.type }}</td>
-									<td>{{ entry.name }}</td>
-									<td>{{ entry.value | currency }}</td>
-									<td>{{ entry.interest | currency }}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-
 				<!-- Loan -->
 				<div class="card">
-					<h2>Loan</h2>
+					<h2>
+						<span class="glyphicon glyphicon-scale" ng-tooltip="There are two sure ways to lose a friend, one is to borrow, the other to lend."></span>
+						Loan
+					</h2>
 					<div>
 						<table>
 							<thead>
@@ -384,6 +368,42 @@
 					</div>
 				</div>
 
+
+
+				<!-- Ledger -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-equalizer" ng-tooltip="Accounting. Act, count, think"></span>
+						Ledger
+					</h2>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Type</th>
+									<th>Name</th>
+									<th>Value</th>
+									<th>Interest</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="entry in ledger.ledger | limitTo:12">
+									<td>
+										<span class="mono">{{ entry.date | date : 'MMM' }}</span>
+										{{ entry.date | date : 'yyyy' }}
+									</td>
+									<td>{{ entry.type }}</td>
+									<td>{{ entry.name }}</td>
+									<td>{{ entry.value | currency }}</td>
+									<td>{{ entry.interest | currency }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -412,17 +432,6 @@
 		<main class="mdl-layout__content">
 			<div class="page-content">
 
-
-				<div class="card" style="width: 300px;" ng-controller="RadarCtrl">
-						<h2>
-							<span class="glyphicon glyphicon-book"></span>
-							Portfolio Diversity
-						</h2>
-						<div>
-							<canvas id="radar" class="chart chart-radar" chart-data="data" chart-options="options" chart-labels="labels"></canvas>
-						</div>
-					</div>
-				</div>
 
 
 
