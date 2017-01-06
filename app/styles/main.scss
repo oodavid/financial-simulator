@@ -11,7 +11,7 @@ html {
 html,
 body {
     font-family: 'Roboto Condensed', sans-serif;
-    background: #e2e1e0;
+    background: #FBFBFB;
 }
 
 .hero {
@@ -29,6 +29,7 @@ body {
 
 
 table {
+    width: 100%;
     border-collapse: collapse;
     white-space: nowrap;
     margin: 0 0 16px;
@@ -36,6 +37,11 @@ table {
     td {
         padding: 4px 6px;
         border-bottom: 1px solid #DDDDDD;
+        vertical-align: top;
+        &.text {
+            white-space: initial;
+            text-align: left;
+        }
     }
     thead {
         th {
@@ -63,24 +69,10 @@ table {
 
 
 .card {
-    // Title
-    > h1,
-    > h2,
-    > h3 {
-        margin: 0;
-        padding: 10px;
-        background: #efefef;
-        > .glyphicon {
-            font-size: 75%;
-        }
-    }
-    // Contents
-    > div {
-        padding: 10px;
-        background: #fff;
-        border-radius: 2px;
-    }
     // Material styling
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 2px;
     -webkit-transition: box-shadow ease-in-out 0.2s;
          -o-transition: box-shadow ease-in-out 0.2s;
             transition: box-shadow ease-in-out 0.2s;
@@ -88,9 +80,50 @@ table {
     &:hover {
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     }
+    // Title
+    > h1,
+    > h2,
+    > h3 {
+        margin: 0;
+        padding: 10px;
+        border-bottom: 1px solid #f1f1f1;
+        > .glyphicon {
+            font-size: 75%;
+        }
+    }
+    // Contents
+    > div {
+        padding: 10px;
+        hr {
+            margin: 0 -10px 10px -10px;
+        }
+        // Make this render the same height as the btn-group
+        .list-group {
+            margin-bottom: 10px;
+            .list-group-item {
+                height: 34px;
+                line-height: 32px;
+                padding: 0 10px;
+                > .glyphicon {
+                    width: 20px;
+                    text-align: center;
+                }
+            }
+        }
+    }
 }
 
 
+
+#loop-controls {
+    .btn {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .glyphicon + .glyphicon {
+        margin-left: -10px;
+    }
+}
 
 
 

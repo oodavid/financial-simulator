@@ -14,6 +14,7 @@
             { name: 'car',     value:  '12000', loan: { type: 'repayment',     interest: 5, term: 12 } },
             { name: 'holiday', value:   '4000', loan: { type: 'repayment',     interest: 4, term: 24 } },
             { name: 'wedding', value:  '30000', loan: { type: 'repayment',     interest: 4, term: 24 } },
+            { name: 'baby a',  value:    '300', loan: { type: 'repayment',     interest: 4, term: 24 } },
         ];
         // Income & Assets 
         $scope.assets = [

@@ -21,22 +21,24 @@
 
 		<hr>
 
+
+
+
 		<div class="row">
 			<div class="col-md-4">
-
 
 
 				<!-- Loop -->
 				<div class="card">
 					<h2>
-						<span class="glyphicon glyphicon-calendar"></span>
+						<span class="glyphicon glyphicon-globe"></span>
 						<span class="mono">{{ loop.date | date : 'MMM' }}</span>
 						{{ loop.date | date : 'yyyy' }}
 					</h2>
 					<div>
 						<!-- Controls -->
 						<p>
-							<div class="btn-group btn-group-justified">
+							<div id="loop-controls" class="btn-group btn-group-justified">
 								<a href="" class="btn btn-default" ng-click="loop.play()" ng-class="{ 'btn-primary': loop.isPlaying }" ng-tooltip="Play">
 									<span class="glyphicon glyphicon-play"></span>
 								</a>
@@ -47,13 +49,14 @@
 									<span class="glyphicon glyphicon-step-forward"></span>
 								</a>
 								<a href="" class="btn btn-default" ng-click="loop.setSpeed(1000)" ng-class="{ 'active': loop.speed == 1000 }" ng-tooltip="Speed: Tortoise">
-									(1)
+									<span class="glyphicon glyphicon-chevron-right"></span>
 								</a>
 								<a href="" class="btn btn-default" ng-click="loop.setSpeed(200)"  ng-class="{ 'active': loop.speed == 200 }" ng-tooltip="Speed: Hare">
-									(2)
+									<span class="glyphicon glyphicon-chevron-right"></span>
+									<span class="glyphicon glyphicon-chevron-right"></span>
 								</a>
 								<a href="" class="btn btn-default" ng-click="loop.setSpeed(50)"   ng-class="{ 'active': loop.speed == 50 }" ng-tooltip="Speed: Life's too short">
-									(3)
+									<span class="glyphicon glyphicon-flash"></span>
 								</a>
 							</div>
 						</p>
@@ -66,168 +69,322 @@
 							<span>Age: {{ loop.age | toYears }}</span>
 							<span class="pull-right">Retirement in: {{ loop.remaining | toYears }}</span>
 						</p>
+						<!-- Upcoming Event -->
+						<hr>
+						<div class="list-group">
+							<a href="" class="list-group-item" onclick="alert('Show the Timeline');">
+								<span class="glyphicon glyphicon-time"></span>
+								Next event: Promotion
+							</a>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Bank -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-piggy-bank"></span>
+						The Bank
+					</h2>
+					<div>
+						<h3>{{ 14872 | currency }}</h3>
+						<canvas
+							id="line"
+							class="chart chart-line"
+							chart-data="loan.chart.data"
+							chart-labels="loan.chart.labels"
+							chart-series="loan.chart.series"
+							chart-options="loan.chart.options"
+							chart-dataset-override="loan.chart.datasetOverride"
+							chart-click="loan.chart.onClick"></canvas>
+						<!-- Quick Calculation -->
+						<hr>
+						<table style="cursor: pointer;" onclick="alert('Show the Ledger');">
+							<thead>
+								<tr>
+									<th>Income</th>
+									<th>Expenses</th>
+									<th>Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{ 1850 | currency }}</td>
+									<td>{{ 1690 | currency }}</td>
+									<td>
+										<span class="glyphicon glyphicon-triangle-top"></span>
+										{{ (1850-1690) | currency }}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+
+				<!-- Income -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-briefcase"></span>
+						<span class="glyphicon glyphicon-education"></span>
+						Income
+					</h2>
+					<div>
+						<h3>{{ 1850 | currency }}</h3>
+						<p>This should be coupled with a graph</p>
+						<hr>
+						<p>When clicked, show a breakdown</p>
+						<p>Once the user invests, switch the icon from salaryman to investor</p>
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									<th>Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="asset in assets">
+									<th>{{ asset.name }}</th>
+									<td>{{ asset.value | currency }}</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 
 
 
 
-			</div>
-			<div class="col-md-4">
-				<div class="card card-1">
-					<h1>hello</h1>
+				<!-- Liabilities -->
+				<div class="card">
+					<h2>
+						Liabilities
+					</h2>
+					<div>
+						<h3>{{ 1690 | currency }}</h3>
+						<p>This should be coupled with a graph</p>
+						<hr>
+						<p>When clicked, show a breakdown</p>
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									<th>Value</th>
+									<th>Cost / Month</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="liability in liabilities">
+									<th>{{ liability.name }}</th>
+									<td>{{ liability.value | currency }}</td>
+									<td>--</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card card-1">
-					<h1>hello</h1>
-				</div>
-			</div>
-		</div>
 
-		<!-- Tick -->
-		<div style="float: left; margin: 20px;">
-		</div>
-		<!-- Ledger -->
-		<div style="float: left; margin: 20px;">
-			<h1>Ledger</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Type</th>
-						<th>Name</th>
-						<th>Value</th>
-						<th>Interest</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="entry in ledger.ledger">
-						<td>{{ entry.date | date : 'dd/MM/yyyy' }}</td>
-						<td>{{ entry.type }}</td>
-						<td>{{ entry.name }}</td>
-						<td>{{ entry.value | currency }}</td>
-						<td>{{ entry.interest | currency }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- Amortization -->
-		<div style="float: left; margin: 20px;">
-			<h1>Loan</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Amount</th>
-						<th>Interest (APR)</th>
-						<th>Term</th>
-						<th>Start</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>{{ loan.amount }}</th>
-						<td>{{ loan.apr | percentage }}</td>
-						<td>{{ loan.term }}</td>
-						<td>{{ loan.start | date : 'dd/MM/yyyy' }}</td>
-					</tr>
-				</tbody>
-			</table>
-			<div style="width: 300px;">
-				<canvas
-					id="line"
-					class="chart chart-line"
-					chart-data="loan.chart.data"
-					chart-labels="loan.chart.labels"
-					chart-series="loan.chart.series"
-					chart-options="loan.chart.options"
-					chart-dataset-override="loan.chart.datasetOverride"
-					chart-click="loan.chart.onClick"></canvas>
+
+
+
+
 			</div>
-			<table>
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Start Balance</th>
-						<th>Payment</th>
-						<th>Interest</th>
-						<th>Overpayment</th>
-						<th>Principal</th>
-						<th>End Balance</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="payment in loan.payments">
-						<th>{{ $index }}</th>
-						<td>{{ payment.start_balance | currency }}
-						<td>{{ payment.payment | currency }}
-						<td>{{ payment.interest | currency }}
-						<td>{{ payment.overpayment ? ( payment.overpayment | currency ) : '--' }}
-						<td>{{ payment.principal | currency }}
-						<td>{{ payment.end_balance | currency }}
-					</tr>
-				</tbody>
-			</table>
-			<button ng-click="loan.addRow();">add row</button>
-			<button ng-click="loan.addRow(1000);">add row with overpayment</button>
-		</div>
-		<!-- Income & Assets -->
-		<div style="float: left; margin: 20px;">
-			<h1>Income &amp; Assets</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="asset in assets">
-						<th>{{ asset.name }}</th>
-						<td>{{ asset.value | currency }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- Expenditure & Liabilities -->
-		<div style="float: left; margin: 20px;">
-			<h1>Expenditure &amp; Liabilities</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Value</th>
-						<th>Cost / Month</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="liability in liabilities">
-						<th>{{ liability.name }}</th>
-						<td>{{ liability.value | currency }}</td>
-						<td>--</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- Timeline -->
-		<div style="float: left; margin: 20px;">
-			<h1>Timeline</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Incoming</th>
-						<th>Outgoing</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>--</th>
-						<td>--</td>
-						<td>--</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="col-md-8">
+
+				<!-- Intro -->
+				<div class="card">
+					<h1>Fateful Choices</h1>
+					<div>
+						<p>Learn how the decisions you make affect your finances.</p>
+						<p>You cannot change your income, but you can choose your lifestyle!</p>
+						<p>The goal is to live a good life, and have enough left over for retirement.</p>
+						<p class="text-center">
+							<button class="btn btn-default btn-lg" onclick="alert('Lord Moneybollocks... Hooo!');">Let's Begin</button>
+						</p>
+					</div>
+				</div>
+
+				<!-- Timeline -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-time"></span>
+						Timeline
+					</h2>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Title</th>
+									<th>Notes</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2022
+									</td>
+									<td class="text">Promotion</td>
+									<td class="text">Results in a payrise</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2025
+									</td>
+									<td class="text">Wedding</td>
+									<td class="text">A one-off expense, that results in a joint income</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2029
+									</td>
+									<td class="text">Job Hunt</td>
+									<td class="text">
+										You lose your job, no income for 6 months
+										<span class="label label-danger">Hard-Mode</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2026
+									</td>
+									<td class="text">Promotion</td>
+									<td class="text">Results in a payrise</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2029
+									</td>
+									<td class="text">Baby</td>
+									<td class="text">Your joint income is reduced, and you your expenses increase over time</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2032
+									</td>
+									<td class="text">Promotion</td>
+									<td class="text">Results in a payrise</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2029
+									</td>
+									<td class="text">Divorce</td>
+									<td class="text">
+										Your joint income is removed, sell your house and split the difference
+										<span class="label label-danger">Hard-Mode</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class="mono">Jan</span> 2052
+									</td>
+									<td class="text">Retirement</td>
+									<td class="text">Will you sail into the sunset, or live in abject poverty?</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+				<!-- Ledger -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-equalizer"></span>
+						Ledger
+					</h2>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Type</th>
+									<th>Name</th>
+									<th>Value</th>
+									<th>Interest</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="entry in ledger.ledger | limitTo:12">
+									<td>
+										<span class="mono">{{ entry.date | date : 'MMM' }}</span>
+										{{ entry.date | date : 'yyyy' }}
+									</td>
+									<td>{{ entry.type }}</td>
+									<td>{{ entry.name }}</td>
+									<td>{{ entry.value | currency }}</td>
+									<td>{{ entry.interest | currency }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+				<!-- Loan -->
+				<div class="card">
+					<h2>Loan</h2>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Amount</th>
+									<th>Interest (APR)</th>
+									<th>Term</th>
+									<th>Start</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>{{ loan.amount }}</th>
+									<td>{{ loan.apr | percentage }}</td>
+									<td>{{ loan.term }}</td>
+									<td>{{ loan.start | date : 'dd/MM/yyyy' }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<canvas
+							id="line"
+							class="chart chart-line"
+							chart-data="loan.chart.data"
+							chart-labels="loan.chart.labels"
+							chart-series="loan.chart.series"
+							chart-options="loan.chart.options"
+							chart-dataset-override="loan.chart.datasetOverride"
+							chart-click="loan.chart.onClick"></canvas>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Start Balance</th>
+									<th>Payment</th>
+									<th>Interest</th>
+									<th>Overpayment</th>
+									<th>Principal</th>
+									<th>End Balance</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="payment in loan.payments | limitTo:12">
+									<th>{{ $index }}</th>
+									<td>{{ payment.start_balance | currency }}</td>
+									<td>{{ payment.payment | currency }}</td>
+									<td>{{ payment.interest | currency }}</td>
+									<td>{{ payment.overpayment ? ( payment.overpayment | currency ) : '--' }}</td>
+									<td>{{ payment.principal | currency }}</td>
+									<td>{{ payment.end_balance | currency }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<button class="btn btn-default" ng-click="loan.addRow();">add row</button>
+						<button class="btn btn-default" ng-click="loan.addRow(1000);">add row with overpayment</button>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 
@@ -256,63 +413,20 @@
 			<div class="page-content">
 
 
-				<div class="mdl-grid">
-					<div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
-						<div class="mdl-card__title">
-							<h2 class="mdl-card__title-text">Fateful Choices</h2>
-						</div>
-						<div class="mdl-card__supporting-text">
-							<p>Learn how the decisions you make affect your finances.</p>
-							<p>You cannot change your income, but you can choose your lifestyle!</p>
-							<p>The goal is to live a good life, and have enough left over for retirement.</p>
-						</div>
-						<div class="mdl-card__actions mdl-card--border">
-							<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-								Lets Begin
-							</a>
-						</div>
-					</div>
-					<div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
-						<div class="mdl-card__title">
-							<h2 class="mdl-card__title-text">Wealth over Time</h2>
-						</div>
-						<div class="mdl-card__supporting-text" ng-controller="LineCtrl">
-							<canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"></canvas>
-						</div>
-						<div class="mdl-card__actions mdl-card--border">
-							<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-								Options
-							</a>
-						</div>
-						<div class="mdl-card__menu">
-							<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-								<i class="material-icons">share</i>
-							</button>
-						</div>
-					</div>
-					<div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
-						<div class="mdl-card__title">
-							<h2 class="mdl-card__title-text">Diversity</h2>
-						</div>
-						<div class="mdl-card__supporting-text" ng-controller="RadarCtrl">
+				<div class="card" style="width: 300px;" ng-controller="RadarCtrl">
+						<h2>
+							<span class="glyphicon glyphicon-book"></span>
+							Portfolio Diversity
+						</h2>
+						<div>
 							<canvas id="radar" class="chart chart-radar" chart-data="data" chart-options="options" chart-labels="labels"></canvas>
-						</div>
-						<div class="mdl-card__actions mdl-card--border">
-							<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-								Options
-							</a>
-						</div>
-						<div class="mdl-card__menu">
-							<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-								<i class="material-icons">share</i>
-							</button>
 						</div>
 					</div>
 				</div>
 
 
 
-			<h1>Todo</h1>
+			<h2>Todo</h2>
 			<ul>
 					<li><strike>Task Runner / Environment</strike></li>
 					<li><strike>AngularJS</strike></li>
@@ -321,19 +435,19 @@
 					<li>Calculator - Depreciating Assets</li>
 					<li>Calculator - Stocks</li>
 					<li>This is quite nice - <a href="http://accruejs.com/">accrue.js</a></li>
-					<li>Plan layout (paper)</li>
+					<li><strike>Plan layout (paper)</strike></li>
+					<li><strike>Implement layout</strike></li>
 					<li>Plan charts (see <a href="https://jtblin.github.io/angular-chart.js/">chart.js</a>)</li>
-					<li>Layout - see <a href="https://getmdl.io/components/index.html">docs</a></li>
 			</ul>
 
 
 
 
-			<h1>Career</h1>
+			<h2>Career</h2>
 			<ul>
 					<li>Salary: £16,000</li>
 			</ul>
-			<h1>Decisions</h1>
+			<h2>Decisions</h2>
 			<ul>
 					<li>car</li>
 					<ul>
@@ -367,16 +481,7 @@
 							<li>weekend break</li>
 					</ul>
 			</ul>
-			<h1>Timeline</h1>
-			<ul>
-					<li>Promotion every 5 years</li>
-					<li>You met the love of your life! (extra income, extra outgoings, if you move in together)</li>
-					<li>Get married... choose the wedding</li>
-					<li>Would you like to start a family? (increases your outgoings)</li>
-					<li>Bitter Divorce (halves your assets)</li>
-					<li>Retire at 60</li>
-			</ul>
-			<h1>Status</h1>
+			<h2>Status</h2>
 			<ul>
 					<li>Lost in Interest: £5,000</li>
 					<li>Earned in Interest: £27,000</li>

@@ -2,6 +2,14 @@ TODO
 
 Mock this up visually
 
+Onboarding
+	Enable each card in succession
+		1 - User clicks "begin"
+		2 - User can press Play
+		3 - User can make decisions
+		4 - User can drill down into their assets etc.
+	Try just using the :hover style on the next card that needs interaction
+
 Ledger
 	Shows all transactions
 
@@ -14,6 +22,10 @@ Timeline
 
 Loan
 	Link to gameloop
+
+Bonus
+	Implement Lord Mountbutton
+	Maybe as Lord Moneybollocks
 
 
 

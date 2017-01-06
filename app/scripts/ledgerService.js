@@ -14,7 +14,7 @@
 	    this.track = function(props){
 	        // Clone and modify the object
 	        var _props = angular.copy(props);
-	        _props.date = gameLoop.date;
+	        _props.date = new Date(gameLoop.date);
 	        // Add to the ledger
 	        _this.ledger.push(_props);
 	    };
