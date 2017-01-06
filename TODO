@@ -2,6 +2,11 @@ TODO
 
 Mock this up visually
 
+I need a section that shows the current "state" of the user
+	House is nice
+	Car is shitty
+	etc.
+
 Onboarding
 	Enable each card in succession
 		1 - User clicks "begin"

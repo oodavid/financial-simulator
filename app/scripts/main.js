@@ -19,4 +19,5 @@ require('./gameLoopService.js');
 require('./financeService.js');
 require('./ledgerService.js');
 require('./LoanFactory.js');
+require('./animations.js');
 require('./demo.js');

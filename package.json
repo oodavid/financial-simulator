@@ -2,13 +2,12 @@
   "name": "credential-front-end",
   "version": "1.8.0",
   "dependencies": {
-    "angular": "^1.6.0",
-    "angular-animate": "1.2.16",
+    "angular": "1.6.1",
+    "angular-animate": "1.6.1",
     "angular-chart.js": "^1.1.0",
     "chart.js": "^2.4.0",
     "jquery": "3.1.0",
-    "lodash": "^4.13.1",
-    "material-design-lite": "^1.3.0"
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
     "angular-mocks": "1.5.7",

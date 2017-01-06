@@ -87,6 +87,7 @@
 						<span class="glyphicon glyphicon-piggy-bank" ng-tooltip="Squeal like a pig!!"></span>
 						The Bank
 					</h2>
+					<!-- Bank :: Overview -->
 					<div>
 						<h3>{{ 14872 | currency }}</h3>
 						<canvas
@@ -119,7 +120,16 @@
 								</tr>
 							</tbody>
 						</table>
-
+					</div>
+					<!-- Bank :: More -->
+					<div ng-if="bool" class="slideInOut">
+						<p>Hello world</p>
+						<p>This is a test</p>
+						<p>Do not be afraid</p>
+					</div>
+					<!-- Bank :: Toggle -->
+					<div class="sliderToggle" ng-click="bool = !bool" ng-class="{ open: bool }">
+						<span></span>
 					</div>
 				</div>
 

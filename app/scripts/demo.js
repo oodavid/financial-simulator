@@ -126,11 +126,11 @@
     }])
 
     .controller("RadarCtrl", function ($scope) {
-        $scope.labels =["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"];
+        $scope.labels =["Low Risk", "Medium Risk", "High Risk", "Gold", "Property"];
 
         $scope.data = [
-            [65, 59, 90, 81, 56, 55, 40],
-            [28, 48, 40, 19, 96, 27, 100]
+            [65, 59, 90, 81, 56],
+            [28, 48, 40, 19, 96]
         ];
     });
 })();
