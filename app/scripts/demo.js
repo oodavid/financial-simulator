@@ -36,6 +36,21 @@
         
 
 
+        gameLoop.one('gameStart', function(){
+            console.log('game has started');
+        });
+        gameLoop.one('gameEnd', function(){
+            console.log('game has ended');
+        });
+        gameLoop.one('tick', function(){
+            console.log('ONE tick');
+        });
+        var task = gameLoop.on('tick', function(){
+            console.log('on tick');
+        });
+        
+
+
 
         //
         // Test the financeService logic

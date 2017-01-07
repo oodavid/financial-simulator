@@ -4,28 +4,68 @@
  *      The game loop "ticks" at given intervals, can be paused
  *       and can run at a number of different speeds.
  *
+ *      The loop can be subscribed to, it fires a number of events:
+ *          gameStart
+ *          tick
+ *          gameEnd
+ *
+ *      To subscribe and unsubscribe, use:
+ *          var task = gameLoop.on('tick', callback);
+ *          gameLoop.cancel(task);
+ *
+ *      Alternatively, you can use the `one` method:
+ *          gameLoop.one('tick', callback);
+ *
  *      @author   David 'oodavid' King
  */
 (function(){
     angular.module('fateful')
     .service('gameLoop', ['$interval', '$filter', function($interval, $filter){
         var _this = this;
-        this.date       = null;  // Current Date (elapsed)
+        //
+        // Event Emitter
+        //
+        var callbacks = {
+            'gameStart':  {},
+            'tick':       {},
+            'gameEnd':    {},
+        };
+        var id = 0;
+        this.on = function(name, callback){
+            id ++;
+            callbacks[name][id] = callback;
+            return { name: name, id: id };
+        };
+        this.cancel = function(task){
+            delete callbacks[task.name][task.id];
+        };
+        this.one = function(name, callback){
+            var task = _this.on(name, function(){
+                callback();
+                _this.cancel(task);
+            })
+        };
+        var trigger = function(name){
+            for (var callback in callbacks[name]) {
+                if(callbacks[name].hasOwnProperty(callback)){
+                    callbacks[name][callback]();
+                }
+            }
+        };
+        //
+        // Date tracking
+        //
+        this.date = new Date(); // Current Date (elapsed)
+        this.date.setDate(1);
+        this.date.setHours(12);
+        this.date.setMinutes(0);
+        this.date.setSeconds(0);
         this.dob        = null;  // Date of Birth
         this.age        = null;  // Current Age in Months
         this.retirement = null;  // Number of months till retirement
         this.elapsed    = 0;     // Number of months that have elapsed
         this.remaining  = null;  // Number of months remaining
         this.speed      = 1000;  // ms between ticks
-        this.interval   = false; // $interval promise object
-        this.isPlaying  = false; // flag
-        this.isPaused   = true;  // flag
-        // The "current" date - used in our calculations
-        this.date = new Date();
-        this.date.setDate(1);
-        this.date.setHours(12);
-        this.date.setMinutes(0);
-        this.date.setSeconds(0);
         // Calculates the age and remaining
         var recalculateDates = function(){
             // Age
@@ -40,13 +80,13 @@
             _this.dob = date;
             recalculateDates();
         };
-        // ...from an age
-        this.setDobFromAge = function(years, months){
-            var dob = new Date();
-            dob.setYear(dob.getYear()-years);
-            dob.setMonth(dob.getMonth()-months);
-            _this.setDob(dob);
-        };
+            // ...from an age
+            this.setDobFromAge = function(years, months){
+                var dob = new Date();
+                dob.setYear(dob.getYear()-years);
+                dob.setMonth(dob.getMonth()-months);
+                _this.setDob(dob);
+            };
         // Sets retirement age
         this.setRetirementAge = function(years, months){
             _this.retirement = (years*12) + months;
@@ -56,36 +96,52 @@
         this.setDobFromAge(30, 0);
         this.setRetirementAge(65, 0);
         //
-        // Tick
+        // Tick methods
         //
+        this.isPlaying = false; // flag
+        this.isPaused  = true;  // flag
+        var interval   = false;  // So we can cancel the tick
+        var hasStarted = false;  // flag
+        var hasEnded   = false;  // flag
         var doTick = function(){
-            _this.elapsed ++;
-            _this.date.setMonth(_this.date.getMonth()+1);
-            recalculateDates();
+            if(!hasEnded){
+                _this.elapsed ++;
+                _this.date.setMonth(_this.date.getMonth()+1);
+                recalculateDates();
+                if(!hasStarted){
+                    hasStarted = true;
+                    trigger('gameStart'); // Must only trigger once
+                }
+                trigger('tick');
+                if(_this.remaining <= 0){
+                    trigger('gameEnd'); // Must only trigger once
+                    _this.pause();
+                }
+            }
         };
         this.tick = function(){
             _this.pause();
             doTick();
         };
         this.setSpeed = function(milliseconds){
-            this.speed = milliseconds;
-            if(this.isPlaying){
-                this.pause();
-                this.play();
+            _this.speed = milliseconds;
+            if(_this.isPlaying){
+                _this.pause();
+                _this.play();
             }
         };
         this.play = function(){
-            if(this.isPaused){
-                this.isPaused  = false;
-                this.isPlaying = true;
-                this.interval = $interval(doTick, this.speed); // Tick!
+            if(!hasEnded && _this.isPaused){
+                _this.isPaused  = false;
+                _this.isPlaying = true;
+                interval = $interval(doTick, _this.speed);
             }
         };
         this.pause = function(){
-            if(this.isPlaying){
-                this.isPaused  = true;
-                this.isPlaying = false;
-                $interval.cancel(this.interval); // Cancel the interval
+            if(_this.isPlaying){
+                _this.isPaused  = true;
+                _this.isPlaying = false;
+                $interval.cancel(interval);
             }
         };
     }]);
