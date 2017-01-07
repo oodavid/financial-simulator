@@ -8,7 +8,7 @@
  */
 (function(){
     angular.module('fateful')
-    .service('gameLoop', ['$timeout', '$filter', function($timeout, $filter){
+    .service('gameLoop', ['$interval', '$filter', function($interval, $filter){
         var _this = this;
         this.date       = null;  // Current Date (elapsed)
         this.dob        = null;  // Date of Birth
@@ -17,7 +17,7 @@
         this.elapsed    = 0;     // Number of months that have elapsed
         this.remaining  = null;  // Number of months remaining
         this.speed      = 1000;  // ms between ticks
-        this.timer      = false; // $timout object
+        this.interval   = false; // $interval promise object
         this.isPlaying  = false; // flag
         this.isPaused   = true;  // flag
         // The "current" date - used in our calculations
@@ -55,12 +55,17 @@
         // Sensible defaults
         this.setDobFromAge(30, 0);
         this.setRetirementAge(65, 0);
-        // Tick method
-        this.tick = function(){
+        //
+        // Tick
+        //
+        var doTick = function(){
             _this.elapsed ++;
             _this.date.setMonth(_this.date.getMonth()+1);
             recalculateDates();
-            _this.timer = $timeout(_this.tick, _this.speed); // Tick!
+        };
+        this.tick = function(){
+            _this.pause();
+            doTick();
         };
         this.setSpeed = function(milliseconds){
             this.speed = milliseconds;
@@ -73,14 +78,14 @@
             if(this.isPaused){
                 this.isPaused  = false;
                 this.isPlaying = true;
-                this.timer = $timeout(this.tick, this.speed); // Tick!
+                this.interval = $interval(doTick, this.speed); // Tick!
             }
         };
         this.pause = function(){
             if(this.isPlaying){
                 this.isPaused  = true;
                 this.isPlaying = false;
-                $timeout.cancel(this.timer); // Cancel the timer
+                $interval.cancel(this.interval); // Cancel the interval
             }
         };
     }]);
