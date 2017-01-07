@@ -8,6 +8,7 @@
 console.log('TODO > Loan > Create "makeOneOffPayment" method');
 console.log('TODO > Loan > Create "setRecurring" method');
 console.log('TODO > Loan > Sort out the chart');
+console.log('TODO > Loan > This should probably use an emitter too, so we can subscribe to the loan being paid off (user can tick a box "alert me when this is paid off")');
 (function(){
     angular.module('fateful')
     .factory('Loan', ['gameLoop', 'financeService', 'ledgerService', function(gameLoop, financeService, ledgerService){
