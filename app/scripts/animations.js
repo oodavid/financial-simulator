@@ -5,11 +5,11 @@
             enter: function(element, doneFn) {
                 jQuery(element)
                     .css('display', 'none')
-                    .slideDown(300, doneFn);
+                    .slideDown(200, doneFn);
             },
             leave: function(element, doneFn) {
                 jQuery(element)
-                    .slideUp(300, doneFn);
+                    .slideUp(200, doneFn);
             }
         };
     }]);

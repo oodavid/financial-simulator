@@ -151,9 +151,9 @@ table {
     border-top: 1px solid #f1f1f1;
     cursor: pointer;
     text-align: center;
-    -webkit-transition: background-color ease-in-out 400ms;
-         -o-transition: background-color ease-in-out 400ms;
-            transition: background-color ease-in-out 400ms;
+    -webkit-transition: background-color ease-in-out 300ms;
+         -o-transition: background-color ease-in-out 300ms;
+            transition: background-color ease-in-out 300ms;
     background: #F0F0F0;
     > span {
         display: inline-block;
@@ -166,9 +166,9 @@ table {
         border-bottom: 0 solid #888888;
         overflow: hidden;
         border-width: 10px 10px 0 10px;
-        -webkit-transition: transform ease-in-out 400ms;
-             -o-transition: transform ease-in-out 400ms;
-                transition: transform ease-in-out 400ms;
+        -webkit-transition: transform ease-in-out 300ms;
+             -o-transition: transform ease-in-out 300ms;
+                transition: transform ease-in-out 300ms;
     }
     &.open > span {
         transform: rotate(-180deg);
