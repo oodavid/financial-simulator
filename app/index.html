@@ -319,7 +319,7 @@
 				<div class="card">
 					<h2>
 						<span class="glyphicon glyphicon-scale" ng-tooltip="There are two sure ways to lose a friend, one is to borrow, the other to lend."></span>
-						Loan
+						Loan :: {{ loan.name }}
 					</h2>
 					<div>
 						<table>
@@ -362,7 +362,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="payment in loan.payments | limitTo:12">
+								<tr ng-repeat="payment in loan.payments">
 									<th>{{ $index }}</th>
 									<td>{{ payment.start_balance | currency }}</td>
 									<td>{{ payment.payment | currency }}</td>
@@ -398,7 +398,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="entry in ledger.ledger | limitTo:12">
+								<tr ng-repeat="entry in ledger.ledger">
 									<td>
 										<span class="mono">{{ entry.date | date : 'MMM' }}</span>
 										{{ entry.date | date : 'yyyy' }}

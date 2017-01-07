@@ -11,7 +11,7 @@
  *
  *      To subscribe and unsubscribe, use:
  *          var task = gameLoop.on('tick', callback);
- *          gameLoop.cancel(task);
+ *          gameLoop.off(task);
  *
  *      Alternatively, you can use the `one` method:
  *          gameLoop.one('tick', callback);
@@ -36,13 +36,13 @@
             callbacks[name][id] = callback;
             return { name: name, id: id };
         };
-        this.cancel = function(task){
+        this.off = function(task){
             delete callbacks[task.name][task.id];
         };
         this.one = function(name, callback){
             var task = _this.on(name, function(){
                 callback();
-                _this.cancel(task);
+                _this.off(task);
             })
         };
         var trigger = function(name){
@@ -93,7 +93,7 @@
             recalculateDates();
         };
         // Sensible defaults
-        this.setDobFromAge(30, 0);
+        this.setDobFromAge(25, 0);
         this.setRetirementAge(65, 0);
         //
         // Tick methods

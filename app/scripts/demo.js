@@ -29,13 +29,13 @@
         };
         // Create a demo Loan object
         $scope.loan = new Loan({
+            name: 'My Loan',
             amount: 100000,
             apr:    0.045,
             term:   300,
         });
-        
-
-
+        // Play with events
+        /*
         gameLoop.one('gameStart', function(){
             console.log('game has started');
         });
@@ -45,13 +45,15 @@
         gameLoop.one('tick', function(){
             console.log('ONE tick');
         });
+        var n = 0;
         var task = gameLoop.on('tick', function(){
             console.log('on tick');
+            // n++;
+            // if(n > 10){
+            //     gameLoop.off(task);
+            // }
         });
-        
-
-
-
+        */
         //
         // Test the financeService logic
         //

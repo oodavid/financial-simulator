@@ -5,18 +5,35 @@
  *
  *      @author   David 'oodavid' King
  */
+console.log('TODO > Loan > Create "makeOneOffPayment" method');
+console.log('TODO > Loan > Create "setRecurring" method');
+console.log('TODO > Loan > Sort out the chart');
 (function(){
     angular.module('fateful')
-    .factory('Loan', ['financeService', 'ledgerService', function(financeService, ledgerService){
+    .factory('Loan', ['gameLoop', 'financeService', 'ledgerService', function(gameLoop, financeService, ledgerService){
         // Instantiation
-        function Loan(props) {
-            this.amount   = props.amount;
-            this.apr      = props.apr;
-            this.term     = props.term;
-            this.start    = new Date();
-            this.payments = [];
+        function Loan(props){
+            var _this = this;
+            this.name        = props.name;
+            this.amount      = props.amount;
+            this.apr         = props.apr;
+            this.term        = props.term;
+            this.start       = new Date();
+            this.payments    = [];
+            this.lastPayment = null; // Pointer to the last payment object
+
+            // Add a row on tick
+            console.log('this doesn\'t feel clean enough...');
+            var task = gameLoop.on('tick', function(){
+                _this.addRow();
+                if(_this.lastPayment.end_balance <= 0){
+                    gameLoop.off(task);
+                }
+            });
+
+
             // Calculate the lifetime payments
-            this.lifetime();
+            // this.lifetime();
 
 
             this.chart = {};
@@ -51,8 +68,7 @@
         };
         // Adds a row to the payments list
         Loan.prototype.addRow = function(overpayment){
-            var l = this.payments.length;
-            var start_balance = (l ? this.payments[l-1].end_balance : this.amount);
+            var start_balance = this.lastPayment ? this.lastPayment.end_balance : this.amount;
             if(start_balance <= 0){
                 return; // No need for an extra row, we're done
             }
@@ -72,22 +88,24 @@
                 end_balance = 0;
             }
             // Add to our payments list
-            this.payments.push({
+            this.lastPayment = {
                 start_balance: start_balance,
                 payment: payment,
                 interest: interest,
                 overpayment: overpayment,
                 principal: principal,
                 end_balance: end_balance,
-            });
+            }
+            this.payments.push(this.lastPayment);
             // Add the changes to the ledger
             ledgerService.track({
                 type: 'loan',
-                name: 'An Unnamed Loan',
+                name: this.name,
                 value: (payment+overpayment),
                 interest: interest
             });
         };
+        /*
         // Adds a row to the payments list
         Loan.prototype.lifetime = function(overpayment){
             for(var i=0; i<this.term; i++){
@@ -98,6 +116,7 @@
                 }
             }
         };
+        */
         // And return
         return Loan;
     }]);
