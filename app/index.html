@@ -349,6 +349,16 @@
 							chart-options="loan.chart.options"
 							chart-dataset-override="loan.chart.datasetOverride"
 							chart-click="loan.chart.onClick"></canvas>
+						<p>
+							Set Recurring Overpayment to:
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 0 }" ng-click="loan.setRecurringOverpayment(0);">{{ 0 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 200 }" ng-click="loan.setRecurringOverpayment(200);">{{ 200 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 500 }" ng-click="loan.setRecurringOverpayment(500);">{{ 500 | currency }}</button>
+						</p>
+						<p>
+							Make One-Off Overpayment:
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(1000);">{{ 1000 | currency }}</button>
+						</p>
 						<table>
 							<thead>
 								<tr>
@@ -373,8 +383,6 @@
 								</tr>
 							</tbody>
 						</table>
-						<button class="btn btn-default" ng-click="loan.addRow();">add row</button>
-						<button class="btn btn-default" ng-click="loan.addRow(1000);">add row with overpayment</button>
 					</div>
 				</div>
 

@@ -29,7 +29,7 @@
         };
         // Create a demo Loan object
         $scope.loan = new Loan({
-            name: 'My Loan',
+            name: 'My Mortgage',
             amount: 100000,
             apr:    0.045,
             term:   300,

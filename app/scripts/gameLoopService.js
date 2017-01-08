@@ -82,10 +82,6 @@
                 _this.elapsed ++;
                 _this.date.setMonth(_this.date.getMonth()+1);
                 recalculateDates();
-                if(!hasStarted){
-                    hasStarted = true;
-                    _this.trigger('gameStart'); // Must only trigger once
-                }
                 _this.trigger('tick');
                 if(_this.remaining <= 0){
                     _this.trigger('gameEnd'); // Must only trigger once
@@ -106,6 +102,10 @@
         };
         this.play = function(){
             if(!hasEnded && _this.isPaused){
+                if(!hasStarted){
+                    hasStarted = true;
+                    _this.trigger('gameStart'); // Must only trigger once
+                }
                 _this.isPaused  = false;
                 _this.isPlaying = true;
                 interval = $interval(doTick, _this.speed);

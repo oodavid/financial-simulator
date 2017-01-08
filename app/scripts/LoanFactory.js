@@ -5,8 +5,6 @@
  *
  *      @author   David 'oodavid' King
  */
-console.log('TODO > Loan > Create "makeOneOffPayment" method');
-console.log('TODO > Loan > Create "setRecurring" method');
 console.log('TODO > Loan > Sort out the chart');
 console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them?');
 (function(){
@@ -22,26 +20,26 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             this.start       = new Date();
             this.payments    = [];
             this.lastPayment = null; // Pointer to the last payment object
+            this.overpayment = 0;
             //
             // Event Emitter
             //
             emitterService.addLogicTo(this);
-
-            // Add a row on tick
+            //
+            // Tick - make a payment
+            //
             console.log('this doesn\'t feel clean enough...');
+            _this.makeMonthlyPayment(); // Make the first payment ASAP
             var task = gameLoop.on('tick', function(){
-                _this.addRow();
+                _this.makeMonthlyPayment();
                 if(_this.lastPayment.end_balance <= 0){
                     gameLoop.off(task);
                     _this.trigger('paid');
                 }
             });
-
-
-            // Calculate the lifetime payments
-            // this.lifetime();
-
-
+            //
+            // Chart - WIP
+            //
             this.chart = {};
             this.chart.labels = ["January", "February", "March", "April", "May", "June", "July"];
             this.chart.series = ['Series A', 'Series B'];
@@ -72,15 +70,14 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                 }
             };
         };
-        // Adds a row to the payments list
-        Loan.prototype.addRow = function(overpayment){
+        // Adds a payment
+        Loan.prototype.addPayment = function(interest, payment, overpayment){
+            // Only if we have anything to pay
             var start_balance = this.lastPayment ? this.lastPayment.end_balance : this.amount;
             if(start_balance <= 0){
-                return; // No need for an extra row, we're done
+                return;
             }
-            var interest = start_balance * (this.apr/12);
-            var payment = -financeService.PMT(this.apr/12, this.term, this.amount);
-            var overpayment = overpayment || 0;
+            // Calculate the principal and end_balance
             var principal = payment + overpayment - interest;
             var end_balance = start_balance - principal;
             // Make sure we don't pay too much
@@ -101,7 +98,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                 overpayment: overpayment,
                 principal: principal,
                 end_balance: end_balance,
-            }
+            };
             this.payments.push(this.lastPayment);
             // Add the changes to the ledger
             ledgerService.track({
@@ -111,18 +108,25 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                 interest: interest
             });
         };
-        /*
-        // Adds a row to the payments list
-        Loan.prototype.lifetime = function(overpayment){
-            for(var i=0; i<this.term; i++){
-                this.addRow(100);
-                var l = this.payments.length;
-                if(this.payments[l-1].end_balance <= 0){
-                    break;
-                }
-            }
+        // Calculates monthly interest, and makes a payment
+        Loan.prototype.makeMonthlyPayment = function(){
+            // Calculate the interest, payment and overpayment
+            var start_balance = this.lastPayment ? this.lastPayment.end_balance : this.amount;
+            var interest = start_balance * (this.apr/12);
+            var payment = -financeService.PMT(this.apr/12, this.term, this.amount);
+            var overpayment = this.overpayment;
+            // Add the payment
+            this.addPayment(interest, payment, overpayment);
         };
-        */
+        // Sets a regular overpayment amount, applied during makeMonthlyPayment
+        Loan.prototype.setRecurringOverpayment = function(overpayment){
+            this.overpayment = overpayment;
+        };
+        // Makes an overpayment, doesn't calculate monthly interest
+        Loan.prototype.makeOverpayment = function(overpayment){
+            // Add the overpayment
+            this.addPayment(0, 0, overpayment);
+        };
         // And return
         return Loan;
     }]);
