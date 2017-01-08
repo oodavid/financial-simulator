@@ -38,7 +38,9 @@
             gameLoop.pause();
             alert(this.name + ' paid off.\n\nI paused the game for you.');
         });
-        // Play with events
+        //
+        // Test the gameLoop events
+        //
         gameLoop.one('gameStart', function(){
             console.log('game has started');
         });

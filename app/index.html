@@ -89,7 +89,7 @@
 					</h2>
 					<!-- Bank :: Overview -->
 					<div>
-						<h3>{{ 14872 | currency }}</h3>
+						<h3>{{ 14872 | moneys }}</h3>
 						<canvas
 							id="line"
 							class="chart chart-line"
@@ -111,11 +111,11 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{{ 1850 | currency }}</td>
-									<td>{{ 1690 | currency }}</td>
+									<td>{{ 1850 | moneys }}</td>
+									<td>{{ 1690 | moneys }}</td>
 									<td>
 										<span class="glyphicon glyphicon-triangle-top"></span>
-										{{ (1850-1690) | currency }}
+										{{ (1850-1690) | moneys }}
 									</td>
 								</tr>
 							</tbody>
@@ -142,7 +142,7 @@
 						Income
 					</h2>
 					<div>
-						<h3>{{ 1850 | currency }}</h3>
+						<h3>{{ 1850 | moneys }}</h3>
 						<p>This should be coupled with a graph</p>
 						<hr>
 						<p>When clicked, show a breakdown</p>
@@ -157,7 +157,7 @@
 							<tbody>
 								<tr ng-repeat="asset in assets">
 									<th>{{ asset.name }}</th>
-									<td>{{ asset.value | currency }}</td>
+									<td>{{ asset.value | moneys }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -174,7 +174,7 @@
 						Liabilities
 					</h2>
 					<div>
-						<h3>{{ 1690 | currency }}</h3>
+						<h3>{{ 1690 | moneys }}</h3>
 						<p>This should be coupled with a graph</p>
 						<hr>
 						<p>When clicked, show a breakdown</p>
@@ -189,7 +189,7 @@
 							<tbody>
 								<tr ng-repeat="liability in liabilities">
 									<th>{{ liability.name }}</th>
-									<td>{{ liability.value | currency }}</td>
+									<td>{{ liability.value | moneys }}</td>
 									<td>--</td>
 								</tr>
 							</tbody>
@@ -280,6 +280,16 @@
 								</tr>
 								<tr>
 									<td>
+										<span class="mono">Jan</span> 2027
+									</td>
+									<td class="text">Inheritance</td>
+									<td class="text">
+										Gain a lump sum
+										<span class="label label-success">Easy-Mode</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
 										<span class="mono">Jan</span> 2029
 									</td>
 									<td class="text">Baby</td>
@@ -358,6 +368,8 @@
 						<p>
 							Make One-Off Overpayment:
 							<button class="btn btn-default" ng-click="loan.makeOverpayment(1000);">{{ 1000 | currency }}</button>
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(5000);">{{ 5000 | currency }}</button>
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(20000);">{{ 20000 | currency }}</button>
 						</p>
 						<table>
 							<thead>
@@ -374,12 +386,12 @@
 							<tbody>
 								<tr ng-repeat="payment in loan.payments">
 									<th>{{ $index }}</th>
-									<td>{{ payment.start_balance | currency }}</td>
-									<td>{{ payment.payment | currency }}</td>
-									<td>{{ payment.interest | currency }}</td>
-									<td>{{ payment.overpayment ? ( payment.overpayment | currency ) : '--' }}</td>
-									<td>{{ payment.principal | currency }}</td>
-									<td>{{ payment.end_balance | currency }}</td>
+									<td>{{ payment.start_balance | moneys }}</td>
+									<td>{{ payment.payment | moneys }}</td>
+									<td>{{ payment.interest | moneys }}</td>
+									<td>{{ payment.overpayment | moneys }}</td>
+									<td>{{ payment.principal | moneys }}</td>
+									<td>{{ payment.end_balance | moneys }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -413,8 +425,8 @@
 									</td>
 									<td>{{ entry.type }}</td>
 									<td>{{ entry.name }}</td>
-									<td>{{ entry.value | currency }}</td>
-									<td>{{ entry.interest | currency }}</td>
+									<td>{{ entry.value | moneys }}</td>
+									<td>{{ entry.interest | moneys }}</td>
 								</tr>
 							</tbody>
 						</table>
