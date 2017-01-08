@@ -15,6 +15,7 @@
 require('./ngTooltips/ngTooltips.js');
 require('./app.js');
 require('./filters.js');
+require('./emitterService.js');
 require('./gameLoopService.js');
 require('./financeService.js');
 require('./ledgerService.js');

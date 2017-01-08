@@ -20,38 +20,12 @@
  */
 (function(){
     angular.module('fateful')
-    .service('gameLoop', ['$interval', '$filter', function($interval, $filter){
+    .service('gameLoop', ['$interval', '$filter', 'emitterService', function($interval, $filter, emitterService){
         var _this = this;
         //
         // Event Emitter
         //
-        var callbacks = {
-            'gameStart':  {},
-            'tick':       {},
-            'gameEnd':    {},
-        };
-        var id = 0;
-        this.on = function(name, callback){
-            id ++;
-            callbacks[name][id] = callback;
-            return { name: name, id: id };
-        };
-        this.off = function(task){
-            delete callbacks[task.name][task.id];
-        };
-        this.one = function(name, callback){
-            var task = _this.on(name, function(){
-                callback();
-                _this.off(task);
-            })
-        };
-        var trigger = function(name){
-            for (var callback in callbacks[name]) {
-                if(callbacks[name].hasOwnProperty(callback)){
-                    callbacks[name][callback]();
-                }
-            }
-        };
+        emitterService.addLogicTo(this);
         //
         // Date tracking
         //
@@ -110,11 +84,11 @@
                 recalculateDates();
                 if(!hasStarted){
                     hasStarted = true;
-                    trigger('gameStart'); // Must only trigger once
+                    _this.trigger('gameStart'); // Must only trigger once
                 }
-                trigger('tick');
+                _this.trigger('tick');
                 if(_this.remaining <= 0){
-                    trigger('gameEnd'); // Must only trigger once
+                    _this.trigger('gameEnd'); // Must only trigger once
                     _this.pause();
                 }
             }
