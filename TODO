@@ -1,45 +1,74 @@
-TODO
+888888888888 ,ad8888ba,   88888888ba,     ,ad8888ba,
+     88     d8"'    `"8b  88      `"8b   d8"'    `"8b
+     88    d8'        `8b 88        `8b d8'        `8b
+     88    88          88 88         88 88          88
+     88    88          88 88         88 88          88
+     88    Y8,        ,8P 88         8P Y8,        ,8P
+     88     Y8a.    .a8P  88      .a8P   Y8a.    .a8P
+     88      `"Y8888Y"'   88888888Y"'     `"Y8888Y"'
 
-Tick Service
-	Simple PubSub needed
+    Loan
+    	Render the chart (quick!)
 
-Mock this up visually
+    Timeline
+    	Hook onto the gameLoop
+    	Trigger events when the date is right
+    	UI :: Tick off events when triggered
 
-Make sure the README is updated (in due course)
+    Salary
+    	New Service
 
-I need a section that shows the current "state" of the user
-	House is nice
-	Car is shitty
-	etc.
+	Ledger
+		Consider how this needs to work
 
-Onboarding
-	Enable each card in succession
-		1 - User clicks "begin"
-		2 - User can press Play
-		3 - User can make decisions
-		4 - User can drill down into their assets etc.
-	Try just using the :hover style on the next card that needs interaction
+	UI
+		Make some improvements
 
-Ledger
-	Shows all transactions
+	Assets & Lifestyle
+		I need a section that shows the current "state" of the user
+		House is nice
+		Car is shitty
+		Holidays are fancy
+		Chiildren are numerous
+		etc.
 
-Timeline
-	Shows upcoming events
-		Payrise
-		Wedding - (one-off expense, adds to income)
-		Baby - (costs ramp up for 21 years)
-		Retirement
+	Moneys
+		Carefully consider how to render +ve and -ve amounts
 
-Loan
-	Link to gameloop
+	Make sure the README is updated (in due course)
 
-Bonus
-	Implement Lord Mountbutton
-	Maybe as Lord Moneybollocks
+	Onboarding
+		Enable each card in succession
+			1 - User clicks "begin"
+			2 - User can press Play
+			3 - User can make decisions
+			4 - User can drill down into their assets etc.
+		Try just using the :hover style on the next card that needs interaction
+		Bonus
+			Implement Lord Mountbutton
+			Maybe as Lord Moneybollocks
 
-This interface is pretty gorgeous
-https://app.visible.vc/
+	This interface is pretty gorgeous
+	https://app.visible.vc/
 
-Get this on Martins Money
+	Get this on Martins Money
 
-Add a newsletter signup
+	Add a newsletter signup
+
+  ,ad8888ba,   ,ad8888ba,   88b           d88 88888888ba  88          88888888888 888888888888 88888888888
+ d8"'    `"8b d8"'    `"8b  888b         d888 88      "8b 88          88               88      88
+d8'          d8'        `8b 88`8b       d8'88 88      ,8P 88          88               88      88
+88           88          88 88 `8b     d8' 88 88aaaaaa8P' 88          88aaaaa          88      88aaaaa
+88           88          88 88  `8b   d8'  88 88""""""'   88          88"""""          88      88
+Y8,          Y8,        ,8P 88   `8b d8'   88 88          88          88               88      88
+ Y8a.    .a8P Y8a.    .a8P  88    `888'    88 88          88          88               88      88
+  `"Y8888Y"'   `"Y8888Y"'   88     `8'     88 88          88888888888 88888888888      88      88888888888
+
+	Mockup the UI
+
+	Loan
+		Link to gameloop
+
+	GameLoop
+		Add a Tick Service
+		Simple PubSub needed
