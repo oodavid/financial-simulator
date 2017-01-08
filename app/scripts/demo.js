@@ -34,8 +34,11 @@
             apr:    0.045,
             term:   300,
         });
+        $scope.loan.on('paid', function(){
+            gameLoop.pause();
+            alert(this.name + ' paid off.\n\nI paused the game for you.');
+        });
         // Play with events
-        /*
         gameLoop.one('gameStart', function(){
             console.log('game has started');
         });
@@ -45,15 +48,13 @@
         gameLoop.one('tick', function(){
             console.log('ONE tick');
         });
-        var n = 0;
-        var task = gameLoop.on('tick', function(){
+        gameLoop.on('tick', function(){
             console.log('on tick');
-            // n++;
-            // if(n > 10){
-            //     gameLoop.off(task);
-            // }
         });
-        */
+        var task = gameLoop.on('tick', function(){
+            console.log('one tick (manually removed)');
+            gameLoop.off(task);
+        });
         //
         // Test the financeService logic
         //

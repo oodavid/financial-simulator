@@ -8,10 +8,10 @@
 console.log('TODO > Loan > Create "makeOneOffPayment" method');
 console.log('TODO > Loan > Create "setRecurring" method');
 console.log('TODO > Loan > Sort out the chart');
-console.log('TODO > Loan > This should probably use an emitter too, so we can subscribe to the loan being paid off (user can tick a box "alert me when this is paid off")');
+console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them?');
 (function(){
     angular.module('fateful')
-    .factory('Loan', ['gameLoop', 'financeService', 'ledgerService', function(gameLoop, financeService, ledgerService){
+    .factory('Loan', ['gameLoop', 'financeService', 'ledgerService', 'emitterService', function(gameLoop, financeService, ledgerService, emitterService){
         // Instantiation
         function Loan(props){
             var _this = this;
@@ -22,6 +22,10 @@ console.log('TODO > Loan > This should probably use an emitter too, so we can su
             this.start       = new Date();
             this.payments    = [];
             this.lastPayment = null; // Pointer to the last payment object
+            //
+            // Event Emitter
+            //
+            emitterService.addLogicTo(this);
 
             // Add a row on tick
             console.log('this doesn\'t feel clean enough...');
@@ -29,6 +33,7 @@ console.log('TODO > Loan > This should probably use an emitter too, so we can su
                 _this.addRow();
                 if(_this.lastPayment.end_balance <= 0){
                     gameLoop.off(task);
+                    _this.trigger('paid');
                 }
             });
 
