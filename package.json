@@ -4,8 +4,7 @@
   "dependencies": {
     "angular": "1.6.1",
     "angular-animate": "1.6.1",
-    "angular-chart.js": "^1.1.0",
-    "chart.js": "^2.4.0",
+    "angular-google-chart": "^0.1.0",
     "jquery": "3.1.0",
     "lodash": "^4.13.1"
   },
@@ -43,31 +42,25 @@
   "scripts": {
     "clean": "                rm -rf dist/ && mkdir dist && mkdir dist/scripts && mkdir dist/styles",
     "sass": "                 node-sass app/ --output dist/ --source-map true --error-bell",
-
     "build:js": "             npm-run-all --parallel build:js:*",
     "build:js:libraries": "   browserify app/scripts/libraries.js              -t uglifyify --debug | exorcist dist/scripts/libraries.bundle.js.map              > dist/scripts/libraries.bundle.js",
     "build:js:main": "        browserify app/scripts/main.js                   -t uglifyify --debug | exorcist dist/scripts/main.bundle.js.map                   > dist/scripts/main.bundle.js",
-    
     "build:css": "            npm run sass && npm-run-all --parallel build:css:*",
     "build:css:main": "       postcss --use autoprefixer --autoprefixer.browsers \"> 5%\" -o dist/styles/main.css      dist/styles/main.css      && cssmin dist/styles/main.css",
-    
     "build:static": "         cpx 'app/**/*.{html,png,jpg,svg,gif,ico,xml,gz,json,eot,ttf,otf,woff,woff2}' dist --clean",
     "build:scripts": "        cpx 'app/scripts/libraries/**/*' dist/scripts/libraries --clean",
     "build:redirects": "      cp app/_redirects dist/_redirects",
-
     "watch:lint": "           esw --color app/** --watch --cache",
     "watch:sass": "           npm run sass -- --watch app/",
     "watch:js-libraries": "   watchify app/scripts/libraries.js              --debug                          -o dist/scripts/libraries.bundle.js",
     "watch:js-main": "        watchify app/scripts/main.js                   --debug --exclude ./libraries.js -o dist/scripts/main.bundle.js",
     "watch:static": "         npm run build:scripts -- --watch",
     "watch:scripts": "        npm run build:static -- --watch",
-
     "open:prod": "            opener http://accredible.com",
     "open:stage": "           opener http://dev.accredible.com",
     "open:localhost": "       opener http://localhost:9123",
     "live-reload": "          live-reload --port 9124 dist/",
     "serve": "                superstatic dist --config superstatic.json --port 9123 --host localhost",
-    
     "local": "                npm-run-all --sequential clean sass && npm-run-all --parallel watch:* live-reload serve open:localhost",
     "production": "           npm-run-all --sequential clean build:*"
   }

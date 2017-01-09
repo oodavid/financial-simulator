@@ -17,19 +17,73 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             this.amount      = props.amount;
             this.apr         = props.apr;
             this.term        = props.term;
-            this.start       = new Date();
+            this.start       = new Date(gameLoop.date);
             this.payments    = [];
             this.lastPayment = null; // Pointer to the last payment object
-            this.overpayment = 0;
+            this.overpayment = 0; // Recurring overpayment amount
+            // 
+            this.basicPayment = -financeService.PMT(this.apr/12, this.term, this.amount);
+            this.total = {
+                payment: 0,
+                principal: 0,
+                interest: 0,
+            };
             //
             // Event Emitter
             //
             emitterService.addLogicTo(this);
             //
+            // Chart - WIP
+            //
+            this.chart = {
+                type: "ComboChart",
+                displayed: false,
+                data: [
+                    ['Number', 'Interest', 'Principal', 'Balance'],
+                ],
+                options: {
+                    isStacked: "true",
+                    seriesType: 'area',
+                    series: {
+                        2: { type: 'line', targetAxisIndex: 1 }, // "Balance" is a line chart, with it's own axis
+                    },
+                    displayExactValues: true,
+                    vAxis: {
+                        gridlines: {
+                            count: 10
+                        }
+                    },
+                    hAxis: {
+                        gridlines: {
+                            count: 10
+                        },
+                        format: 'decimal'
+                    },
+                    legend: { 'position': 'top' },
+                    colors: ['#d9534f', '#337ab7', '#333333'],
+                    lineWidth: 1,
+                },
+                formatters: {
+                    number : [{
+                        columnNum: 1,
+                        pattern: "$ #,##0.00"
+                    }]
+                }
+            };
+            // Pre-fill the data with columns
+            this.num = 0;
+            for(var p=0; p<this.term; p++){
+                this.chart.data.push([
+                    p,
+                    0,
+                    0,
+                    0,
+                ]);
+            }
+
+            //
             // Tick - make a payment
             //
-            console.log('this doesn\'t feel clean enough...');
-            _this.makeMonthlyPayment(); // Make the first payment ASAP
             var task = gameLoop.on('tick', function(){
                 _this.makeMonthlyPayment();
                 if(_this.lastPayment.end_balance <= 0){
@@ -37,38 +91,8 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                     _this.trigger('paid');
                 }
             });
-            //
-            // Chart - WIP
-            //
-            this.chart = {};
-            this.chart.labels = ["January", "February", "March", "April", "May", "June", "July"];
-            this.chart.series = ['Series A', 'Series B'];
-            this.chart.data = [
-                [65, 59, 80, 81, 56, 55, 40],
-                [28, 48, 40, 19, 86, 27, 90]
-            ];
-            this.chart.onClick = function (points, evt) {
-                console.log(points, evt);
-            };
-            this.chart.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-            this.chart.options = {
-                scales: {
-                    yAxes: [
-                        {
-                            id: 'y-axis-1',
-                            type: 'linear',
-                            display: true,
-                            position: 'left'
-                        },
-                        {
-                            id: 'y-axis-2',
-                            type: 'linear',
-                            display: true,
-                            position: 'right'
-                        }
-                    ]
-                }
-            };
+            // Make the first payment
+            // _this.makeMonthlyPayment();
         };
         // Adds a payment
         Loan.prototype.addPayment = function(interest, payment, overpayment){
@@ -100,6 +124,10 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                 end_balance: end_balance,
             };
             this.payments.push(this.lastPayment);
+            // Update our totals
+            this.total.payment += payment + overpayment;
+            this.total.principal += principal;
+            this.total.interest += interest;
             // Add the changes to the ledger
             ledgerService.track({
                 type: 'loan',
@@ -107,6 +135,14 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                 value: (payment+overpayment),
                 interest: interest
             });
+            // Add to the chart
+            this.num ++;
+            this.chart.data[this.num] = [
+                this.num, // new Date(gameLoop.date),
+                this.lastPayment.interest,
+                this.lastPayment.principal,
+                this.lastPayment.end_balance,
+            ];
         };
         // Calculates monthly interest, and makes a payment
         Loan.prototype.makeMonthlyPayment = function(){

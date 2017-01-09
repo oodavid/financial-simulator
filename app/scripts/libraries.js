@@ -16,7 +16,6 @@
  */
 require('jquery');
 require('lodash');
-require('chart.js');
 require('angular');
 require('angular-animate');
-require('angular-chart.js');
+require('angular-google-chart');

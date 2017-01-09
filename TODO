@@ -9,6 +9,14 @@
 
     Loan
     	Render the chart (quick!)
+    	Switch to Google Charts (it has no performance hit)
+    	Use a plugin:
+	    	angular-google-chart:
+	    		http://angular-google-chart.github.io/angular-google-chart/
+	    	(my) demo:
+	    		http://plnkr.co/edit/vClMpGerBS6WTP49f5DG?p=preview
+	    I think we should pre-pad the chart with NULL values
+	    Min / Max
 
     Timeline
     	Hook onto the gameLoop

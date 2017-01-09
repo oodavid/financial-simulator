@@ -10,7 +10,7 @@
     .controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'financeService', 'ledgerService', function ($scope, gameLoop, Loan, financeService, ledgerService){
 
         $scope.liabilities = [
-            { name: 'house',   value: '240000', loan: { type: 'interest-only', interest: 3, term: 300 } }, // 25 years * 12 months
+            { name: 'house',   value: '240000', loan: { type: 'interest-only', interest: 3, term: 240 } }, // 20 years * 12 months
             { name: 'car',     value:  '12000', loan: { type: 'repayment',     interest: 5, term: 12 } },
             { name: 'holiday', value:   '4000', loan: { type: 'repayment',     interest: 4, term: 24 } },
             { name: 'wedding', value:  '30000', loan: { type: 'repayment',     interest: 4, term: 24 } },
@@ -32,11 +32,11 @@
             name: 'My Mortgage',
             amount: 100000,
             apr:    0.045,
-            term:   300,
+            term:   240,
         });
         $scope.loan.on('paid', function(){
             gameLoop.pause();
-            alert(this.name + ' paid off.\n\nI paused the game for you.');
+            console.log(this.name + ' paid off.\n\nI paused the game for you.');
         });
         //
         // Test the gameLoop events
@@ -100,21 +100,41 @@
     }])
 
 
+    .controller("ChartCtrl", ['$scope', '$interval', function($scope, $interval){
+        /*
+        $scope.chart = {
+            type: "LineChart",
+            data: [
+                ['Component', 'cost']
+            ],
+            options: {
+                displayExactValues: true,
+            },
+            formatters: {
+                number : [{
+                    columnNum: 1,
+                    pattern: "$ #,##0.00"
+                }]
+            }
+        };
 
-
-
-
-
-
-
-
-
-
-
-
+        var last = 0;
+        var n = 0;
+        $scope.addData = function(){
+            n++;
+            if(n < 300){
+                $scope.chart.data.push(['Test', Math.random()*100000]);
+                var now = Date.now()
+                console.log(n, now-last);
+                last = now;
+            }
+        };
+        $interval($scope.addData, 50);
+        */
+    }])
 
     .controller("LineCtrl", ['$scope', function ($scope) {
-
+        /*
         $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
         $scope.series = ['Series A', 'Series B'];
         $scope.data = [
@@ -143,14 +163,17 @@
                 ]
             }
         };
+        */
     }])
 
     .controller("RadarCtrl", function ($scope) {
+        /*
         $scope.labels =["Low Risk", "Medium Risk", "High Risk", "Gold", "Property"];
-
         $scope.data = [
             [65, 59, 90, 81, 56],
             [28, 48, 40, 19, 96]
         ];
+        */
     });
+
 })();

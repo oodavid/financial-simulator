@@ -10,10 +10,6 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto+Mono">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<!--[if lt IE 9]>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/excanvas.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.js"></script>
-	<![endif]-->
 	<link rel="stylesheet" href="/styles/main.css">
 </head>
 <body ng-app="fateful">
@@ -90,15 +86,7 @@
 					<!-- Bank :: Overview -->
 					<div>
 						<h3>{{ 14872 | moneys }}</h3>
-						<canvas
-							id="line"
-							class="chart chart-line"
-							chart-data="loan.chart.data"
-							chart-labels="loan.chart.labels"
-							chart-series="loan.chart.series"
-							chart-options="loan.chart.options"
-							chart-dataset-override="loan.chart.datasetOverride"
-							chart-click="loan.chart.onClick"></canvas>
+						<!--div google-chart chart="loan.chart" style="height: 300px;"></div-->
 						<!-- Quick Calculation -->
 						<hr>
 						<table style="cursor: pointer;" onclick="alert('Show the Ledger');">
@@ -205,9 +193,6 @@
 						<span class="glyphicon glyphicon-book" ng-tooltip="Bet the spread."></span>
 						Portfolio Diversity
 					</h2>
-					<div>
-						<canvas id="radar" class="chart chart-radar" chart-data="data" chart-options="options" chart-labels="labels"></canvas>
-					</div>
 				</div>
 
 
@@ -217,6 +202,82 @@
 
 			</div>
 			<div class="col-md-8">
+
+				<!-- Loan -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-scale" ng-tooltip="There are two sure ways to lose a friend, one is to borrow, the other to lend."></span>
+						Loan :: {{ loan.name }}
+					</h2>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Amount</th>
+									<th>APR</th>
+									<th>Term</th>
+									<th>Start</th>
+									<th>Payment</th>
+									<th>Total Paid</th>
+									<th>Principal</th>
+									<th>Interest</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>{{ loan.amount | currency }}</th>
+									<td>{{ loan.apr | percentage }}</td>
+									<td>{{ loan.term }}</td>
+									<td>{{ loan.start | date : 'dd/MM/yyyy' }}</td>
+									<td>{{ loan.basicPayment | currency }}</td>
+									<td>{{ loan.total.payment | currency }}</td>
+									<td>{{ loan.total.principal | currency }}</td>
+									<td>{{ loan.total.interest | currency }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div google-chart chart="loan.chart" style="height: 300px;"></div>
+
+						<p>
+							Set Recurring Overpayment to:
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 0 }" ng-click="loan.setRecurringOverpayment(0);">{{ 0 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 200 }" ng-click="loan.setRecurringOverpayment(200);">{{ 200 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 500 }" ng-click="loan.setRecurringOverpayment(500);">{{ 500 | currency }}</button>
+						</p>
+						<p>
+							Make One-Off Overpayment:
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(1000);">{{ 1000 | currency }}</button>
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(5000);">{{ 5000 | currency }}</button>
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(20000);">{{ 20000 | currency }}</button>
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Start Balance</th>
+									<th>Payment</th>
+									<th>Interest</th>
+									<th>Overpayment</th>
+									<th>Principal</th>
+									<th>End Balance</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="payment in loan.payments">
+									<th>{{ $index }}</th>
+									<td>{{ payment.start_balance | moneys }}</td>
+									<td>{{ payment.payment | moneys }}</td>
+									<td>{{ payment.interest | moneys }}</td>
+									<td>{{ payment.overpayment | moneys }}</td>
+									<td>{{ payment.principal | moneys }}</td>
+									<td>{{ payment.end_balance | moneys }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 
 				<!-- Intro -->
 				<div class="card">
@@ -323,81 +384,6 @@
 						</table>
 					</div>
 				</div>
-
-
-				<!-- Loan -->
-				<div class="card">
-					<h2>
-						<span class="glyphicon glyphicon-scale" ng-tooltip="There are two sure ways to lose a friend, one is to borrow, the other to lend."></span>
-						Loan :: {{ loan.name }}
-					</h2>
-					<div>
-						<table>
-							<thead>
-								<tr>
-									<th>Amount</th>
-									<th>Interest (APR)</th>
-									<th>Term</th>
-									<th>Start</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th>{{ loan.amount }}</th>
-									<td>{{ loan.apr | percentage }}</td>
-									<td>{{ loan.term }}</td>
-									<td>{{ loan.start | date : 'dd/MM/yyyy' }}</td>
-								</tr>
-							</tbody>
-						</table>
-						<canvas
-							id="line"
-							class="chart chart-line"
-							chart-data="loan.chart.data"
-							chart-labels="loan.chart.labels"
-							chart-series="loan.chart.series"
-							chart-options="loan.chart.options"
-							chart-dataset-override="loan.chart.datasetOverride"
-							chart-click="loan.chart.onClick"></canvas>
-						<p>
-							Set Recurring Overpayment to:
-							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 0 }" ng-click="loan.setRecurringOverpayment(0);">{{ 0 | currency }}</button>
-							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 200 }" ng-click="loan.setRecurringOverpayment(200);">{{ 200 | currency }}</button>
-							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 500 }" ng-click="loan.setRecurringOverpayment(500);">{{ 500 | currency }}</button>
-						</p>
-						<p>
-							Make One-Off Overpayment:
-							<button class="btn btn-default" ng-click="loan.makeOverpayment(1000);">{{ 1000 | currency }}</button>
-							<button class="btn btn-default" ng-click="loan.makeOverpayment(5000);">{{ 5000 | currency }}</button>
-							<button class="btn btn-default" ng-click="loan.makeOverpayment(20000);">{{ 20000 | currency }}</button>
-						</p>
-						<table>
-							<thead>
-								<tr>
-									<th>Date</th>
-									<th>Start Balance</th>
-									<th>Payment</th>
-									<th>Interest</th>
-									<th>Overpayment</th>
-									<th>Principal</th>
-									<th>End Balance</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="payment in loan.payments">
-									<th>{{ $index }}</th>
-									<td>{{ payment.start_balance | moneys }}</td>
-									<td>{{ payment.payment | moneys }}</td>
-									<td>{{ payment.interest | moneys }}</td>
-									<td>{{ payment.overpayment | moneys }}</td>
-									<td>{{ payment.principal | moneys }}</td>
-									<td>{{ payment.end_balance | moneys }}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
 
 
 				<!-- Ledger -->

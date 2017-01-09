@@ -6,5 +6,5 @@
  *      @author   David 'oodavid' King
  */
 (function(){
-	angular.module('fateful', ['chart.js', 'ngAnimate', 'ngTooltips']);
+	angular.module('fateful', ['googlechart', 'ngAnimate', 'ngTooltips']);
 })();
