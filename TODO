@@ -7,16 +7,26 @@
      88     Y8a.    .a8P  88      .a8P   Y8a.    .a8P
      88      `"Y8888Y"'   88888888Y"'     `"Y8888Y"'
 
-    Timeline
-    	Hook onto the gameLoop
-    	Trigger events when the date is right
-    	UI :: Tick off events when triggered
-
     Salary
     	New Service
 
 	Ledger
 		Consider how this needs to work
+
+    Timeline
+    	Hook onto the gameLoop
+    	Trigger events when the date is right
+    	UI :: Tick off events when triggered
+
+    Timeline (or something else?)
+    	Need to be able to log achievements like:
+    		"Paid off your loan"
+    		"Bought a car"
+    		"Went on holiday"
+    	These are linked to user decisions, not the system itself
+
+	Videos for different features
+		https://accredible.slack.com/archives/watercooler/p1484068289000235
 
 	UI
 		Make some improvements

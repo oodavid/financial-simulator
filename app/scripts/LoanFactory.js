@@ -13,90 +13,31 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
         // Instantiation
         function Loan(props){
             var _this = this;
+            // Basic settings
             this.name        = props.name;
             this.amount      = props.amount;
             this.apr         = props.apr;
             this.term        = props.term;
             this.start       = new Date(gameLoop.date);
+            this.basicPayment = -financeService.PMT(this.apr/12, this.term, this.amount);
+            // The log and running totals
             this.payments    = [];
             this.lastPayment = null; // Pointer to the last payment object
-            this.regularOverpayment = 0; // Recurring overpayment amount - added to every monthly payment
-            this.oneOffOverpayment  = 0; // One-Off overpayment amount - added to the next monthly payment
-            this.paymentHoliday = 0; // Number of months to skip
-            // 
-            this.basicPayment = -financeService.PMT(this.apr/12, this.term, this.amount);
             this.total = {
-                payment: 0,
-                principal: 0,
-                interest: 0,
+                payment:   0, // Total amount paid
+                principal: 0, // ...of which was principal
+                interest:  0, // ...of which was interest
             };
-            //
-            // Event Emitter
-            //
+            // User settings
+            this.regularOverpayment = 0; // Recurring overpayment amount - added to every monthly payment
+            this.oneOffOverpayment  = 0; // One-Off overpayment amount - added to the NEXT monthly payment
+            this.paymentHoliday     = 0; // Number of months to skip
+            // This is an Event Emitter
             emitterService.addLogicTo(this);
+            // Initialize the chart  
+            this.initChart();
             //
-            // Chart - WIP
-            //
-            this.chart = {
-                type: "ComboChart",
-                displayed: false,
-                data: [
-                    ['Number', 'Interest', 'Principal', 'Balance'],
-                ],
-                options: {
-                    isStacked: "true",
-                    seriesType: 'area',
-                    series: {
-                        2: { type: 'line', targetAxisIndex: 1 }, // "Balance" is a line chart, with it's own axis
-                    },
-                    displayExactValues: true,
-                    vAxes: {
-                        0: {
-                            minValue: 0,
-                            maxValue: (this.basicPayment * 1.1),
-                            gridlines: {
-                                count: 6,
-                                color: '#EEEEEE'
-                            },
-                        },
-                        1: {
-                            minValue: 0,
-                            maxValue: this.amount,
-                            gridlines: {
-                                count: 5,
-                                color: '#BBBBBB'
-                            },
-                        },
-                    },
-                    hAxis: {
-                        gridlines: {
-                            count: 10
-                        },
-                        format: 'decimal'
-                    },
-                    legend: { 'position': 'top' },
-                    colors: ['#d9534f', '#337ab7', '#333333'],
-                    lineWidth: 1,
-                },
-                formatters: {
-                    number : [{
-                        columnNum: 1,
-                        pattern: "$ #,##0.00"
-                    }]
-                }
-            };
-            // Pre-fill the data with columns
-            this.num = 0;
-            for(var p=0; p<=this.term; p++){
-                this.chart.data.push([
-                    p,
-                    0,
-                    0,
-                    0,
-                ]);
-            }
-            //
-            // Tick - make a payment
+            // Make a payment for every tick
             //
             var task = gameLoop.on('tick', function(){
                 _this.makeMonthlyPayment();
@@ -148,13 +89,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                 interest: interest
             });
             // Add to the chart
-            this.num ++;
-            this.chart.data[this.num] = [
-                this.num, // new Date(gameLoop.date),
-                this.lastPayment.interest,
-                (this.lastPayment.principal < 0 ? 0 : this.lastPayment.principal), // When taking a payment holiday, the graph looks confusing when the principal is -ve
-                this.lastPayment.end_balance,
-            ];
+            this.addChartRow(this.lastPayment);
         };
         // Calculates monthly interest, and makes a payment
         Loan.prototype.makeMonthlyPayment = function(){
@@ -185,7 +120,82 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
         Loan.prototype.startPaymentHoliday = function(months){
             this.paymentHoliday = months;
         };
-        // And return
+        // Initializes the chart object
+        Loan.prototype.initChart = function(){
+            this.chart = {
+                type: "ComboChart",
+                displayed: false,
+                data: [
+                    ['Number', 'Interest', 'Principal', 'Balance'],
+                ],
+                options: {
+                    isStacked: "true",
+                    seriesType: 'area',
+                    series: {
+                        2: { 
+                            type: 'line',      // "Balance" is a line chart
+                            targetAxisIndex: 1 // ...with it's own axis
+                        },
+                    },
+                    displayExactValues: true,
+                    vAxes: {
+                        0: {
+                            minValue: 0,
+                            maxValue: (this.basicPayment * 1.1),
+                            gridlines: {
+                                count: 6,
+                                color: '#EEEEEE'
+                            },
+                        },
+                        1: {
+                            minValue: 0,
+                            maxValue: this.amount,
+                            gridlines: {
+                                count: 5,
+                                color: '#BBBBBB'
+                            },
+                        },
+                    },
+                    hAxis: {
+                        gridlines: {
+                            count: 10
+                        },
+                        format: 'decimal'
+                    },
+                    legend: { 'position': 'top' },
+                    colors: ['#d9534f', '#337ab7', '#333333'],
+                    lineWidth: 1,
+                },
+                formatters: {
+                    number : [{
+                        columnNum: 1,
+                        pattern: "$ #,##0.00"
+                    }]
+                }
+            };
+            // Pre-populate with zeros
+            this.num = 0;
+            for(var p=0; p<=this.term; p++){
+                this.chart.data.push([
+                    p,
+                    0,
+                    0,
+                    0,
+                ]);
+            }
+        };
+        // Adds a row to the chart
+        Loan.prototype.addChartRow = function(payment){
+            // Add to the chart
+            this.num ++;
+            this.chart.data[this.num] = [
+                this.num, // Don't use a date Object; they're too expensive
+                payment.interest,
+                (payment.principal < 0 ? 0 : payment.principal), // When taking a payment holiday, the graph looks confusing when the principal is -ve
+                payment.end_balance,
+            ];
+        };
+        // Return the Loan object
         return Loan;
     }]);
 })();
