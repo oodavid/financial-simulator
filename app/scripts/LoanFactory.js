@@ -22,6 +22,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             this.lastPayment = null; // Pointer to the last payment object
             this.regularOverpayment = 0; // Recurring overpayment amount - added to every monthly payment
             this.oneOffOverpayment  = 0; // One-Off overpayment amount - added to the next monthly payment
+            this.paymentHoliday = 0; // Number of months to skip
             // 
             this.basicPayment = -financeService.PMT(this.apr/12, this.term, this.amount);
             this.total = {
@@ -59,10 +60,8 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                             },
                         },
                         1: {
-                            viewWindow: {
-                                min: 0,
-                                max: this.amount,
-                            },
+                            minValue: 0,
+                            maxValue: this.amount,
                             gridlines: {
                                 count: 5,
                                 color: '#BBBBBB'
@@ -153,7 +152,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             this.chart.data[this.num] = [
                 this.num, // new Date(gameLoop.date),
                 this.lastPayment.interest,
-                this.lastPayment.principal,
+                (this.lastPayment.principal < 0 ? 0 : this.lastPayment.principal), // When taking a payment holiday, the graph looks confusing when the principal is -ve
                 this.lastPayment.end_balance,
             ];
         };
@@ -162,9 +161,15 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             // Calculate the interest, payment and overpayment
             var start_balance = this.lastPayment ? this.lastPayment.end_balance : this.amount;
             var interest = start_balance * (this.apr/12);
-            var payment = -financeService.PMT(this.apr/12, this.term, this.amount);
-            var overpayment = this.regularOverpayment + this.oneOffOverpayment;
-            this.oneOffOverpayment = 0; // Reset this
+            var payment = 0;
+            var overpayment = 0;
+            if(this.paymentHoliday == 0){
+                var payment = -financeService.PMT(this.apr/12, this.term, this.amount);
+                var overpayment = this.regularOverpayment + this.oneOffOverpayment;
+                this.oneOffOverpayment = 0; // Reset this
+            } else {
+                this.paymentHoliday --;
+            }
             // Add the payment
             this.addPayment(interest, payment, overpayment);
         };
@@ -175,6 +180,10 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
         // Sets an overpayment for the next cycle
         Loan.prototype.makeOverpayment = function(overpayment){
             this.oneOffOverpayment = overpayment;
+        };
+        // Starts a payment holiday
+        Loan.prototype.startPaymentHoliday = function(months){
+            this.paymentHoliday = months;
         };
         // And return
         return Loan;

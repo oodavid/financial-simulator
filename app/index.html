@@ -247,9 +247,15 @@
 						</p>
 						<p>
 							Make One-Off Overpayment:
-							<button class="btn btn-default" ng-click="loan.makeOverpayment(250);">{{ 2500 | currency }}</button>
+							<button class="btn btn-default" ng-click="loan.makeOverpayment(250);">{{ 250 | currency }}</button>
 							<button class="btn btn-default" ng-click="loan.makeOverpayment(500);">{{ 500 | currency }}</button>
 							<button class="btn btn-default" ng-click="loan.makeOverpayment(1000);">{{ 1000 | currency }}</button>
+						</p>
+						<p>
+							Take Payment Holiday
+							<button class="btn btn-default" ng-click="loan.startPaymentHoliday(1);">1 month</button>
+							<button class="btn btn-default" ng-click="loan.startPaymentHoliday(3);">3 months</button>
+							<button class="btn btn-default" ng-click="loan.startPaymentHoliday(12);">12 months</button>
 						</p>
 						<table>
 							<thead>
