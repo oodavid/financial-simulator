@@ -20,7 +20,8 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             this.start       = new Date(gameLoop.date);
             this.payments    = [];
             this.lastPayment = null; // Pointer to the last payment object
-            this.overpayment = 0; // Recurring overpayment amount
+            this.regularOverpayment = 0; // Recurring overpayment amount - added to every monthly payment
+            this.oneOffOverpayment  = 0; // One-Off overpayment amount - added to the next monthly payment
             // 
             this.basicPayment = -financeService.PMT(this.apr/12, this.term, this.amount);
             this.total = {
@@ -48,10 +49,25 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                         2: { type: 'line', targetAxisIndex: 1 }, // "Balance" is a line chart, with it's own axis
                     },
                     displayExactValues: true,
-                    vAxis: {
-                        gridlines: {
-                            count: 10
-                        }
+                    vAxes: {
+                        0: {
+                            minValue: 0,
+                            maxValue: (this.basicPayment * 1.1),
+                            gridlines: {
+                                count: 6,
+                                color: '#EEEEEE'
+                            },
+                        },
+                        1: {
+                            viewWindow: {
+                                min: 0,
+                                max: this.amount,
+                            },
+                            gridlines: {
+                                count: 5,
+                                color: '#BBBBBB'
+                            },
+                        },
                     },
                     hAxis: {
                         gridlines: {
@@ -72,7 +88,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             };
             // Pre-fill the data with columns
             this.num = 0;
-            for(var p=0; p<this.term; p++){
+            for(var p=0; p<=this.term; p++){
                 this.chart.data.push([
                     p,
                     0,
@@ -80,7 +96,6 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                     0,
                 ]);
             }
-
             //
             // Tick - make a payment
             //
@@ -91,8 +106,6 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
                     _this.trigger('paid');
                 }
             });
-            // Make the first payment
-            // _this.makeMonthlyPayment();
         };
         // Adds a payment
         Loan.prototype.addPayment = function(interest, payment, overpayment){
@@ -150,18 +163,18 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             var start_balance = this.lastPayment ? this.lastPayment.end_balance : this.amount;
             var interest = start_balance * (this.apr/12);
             var payment = -financeService.PMT(this.apr/12, this.term, this.amount);
-            var overpayment = this.overpayment;
+            var overpayment = this.regularOverpayment + this.oneOffOverpayment;
+            this.oneOffOverpayment = 0; // Reset this
             // Add the payment
             this.addPayment(interest, payment, overpayment);
         };
         // Sets a regular overpayment amount, applied during makeMonthlyPayment
         Loan.prototype.setRecurringOverpayment = function(overpayment){
-            this.overpayment = overpayment;
+            this.regularOverpayment = overpayment;
         };
-        // Makes an overpayment, doesn't calculate monthly interest
+        // Sets an overpayment for the next cycle
         Loan.prototype.makeOverpayment = function(overpayment){
-            // Add the overpayment
-            this.addPayment(0, 0, overpayment);
+            this.oneOffOverpayment = overpayment;
         };
         // And return
         return Loan;
