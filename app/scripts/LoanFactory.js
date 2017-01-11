@@ -1,12 +1,30 @@
 'use strict';
 /** LOAN - FACTORY
  *
- *      
+ *  Loans allow the user instant access to cash in the bank.
+ *   In return, they accrue (compount) interest, payable over
+ *   the lifetime of the loan. This Class allows the usual
+ *   interactions with Loans; overpayment and payment holidays.
+ *
+ *      Properties
+ *          loan.chart  -  Google Chart Data Object
+ *          See init logic for others
+ *
+ *      Methods
+ *          new Loan({ name, amount, apr, term })  -  Initializes the loan
+ *          loan.setRecurringOverpayment(value)    -  Sets a regular overpayment
+ *          loan.makeOverpayment(value)            -  Makes a one-off overpayment
+ *          loan.startPaymentHoliday(months)       -  Starts a payment holiday
+ *
+ *      Events
+ *          loan.on('paid', function(){ ... })     -  Triggered when the Loan has been completely paid off
+ *
+ *  TODO
+ *
+ *      Payday Loans don't use APR, should we cater for them?
  *
  *      @author   David 'oodavid' King
  */
-console.log('TODO > Loan > Sort out the chart');
-console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them?');
 (function(){
     angular.module('fateful')
     .factory('Loan', ['gameLoop', 'financeService', 'ledgerService', 'emitterService', function(gameLoop, financeService, ledgerService, emitterService){
@@ -36,9 +54,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
             emitterService.addLogicTo(this);
             // Initialize the chart  
             this.initChart();
-            //
             // Make a payment for every tick
-            //
             var task = gameLoop.on('tick', function(){
                 _this.makeMonthlyPayment();
                 if(_this.lastPayment.end_balance <= 0){
@@ -186,8 +202,7 @@ console.log('TODO > Loan > Payday Loans don\'t use APR, should we cater for them
         };
         // Adds a row to the chart
         Loan.prototype.addChartRow = function(payment){
-            // Add to the chart
-            this.num ++;
+            this.num ++; // Grab the next row
             this.chart.data[this.num] = [
                 this.num, // Don't use a date Object; they're too expensive
                 payment.interest,
