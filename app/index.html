@@ -203,6 +203,65 @@
 			</div>
 			<div class="col-md-8">
 
+				<!-- Salary -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-scale" ng-tooltip="There are two sure ways to lose a friend, one is to borrow, the other to lend."></span>
+						Salary :: {{ salary.name }}
+					</h2>
+					<div>
+						{{ salary }}
+						<table>
+							<thead>
+								<tr>
+									<th>Yearly Salary</th>
+									<th>Total Paid</th>
+									<th>Take Home</th>
+									<th>Tax</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>{{ salary.salary | currency }}</th>
+									<td>{{ salary.total.gross | currency }}</td>
+									<td>{{ salary.total.take_home | currency }}</td>
+									<td>{{ salary.total.tax | currency }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div google-chart chart="salary.chart" style="height: 300px;"></div>
+
+						<p>
+							Set Salary
+							<button class="btn btn-default" ng-click="salary.makeOverpayment(18000);">{{ 18000 | currency }}</button>
+							<button class="btn btn-default" ng-click="salary.makeOverpayment(22000);">{{ 22000 | currency }}</button>
+							<button class="btn btn-default" ng-click="salary.makeOverpayment(36000);">{{ 36000 | currency }}</button>
+							<button class="btn btn-default" ng-click="salary.makeOverpayment(40000);">{{ 40000 | currency }}</button>
+							<button class="btn btn-default" ng-click="salary.makeOverpayment(52000);">{{ 52000 | currency }}</button>
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Gross</th>
+									<th>Take Home</th>
+									<th>Tax</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="payment in salary.payments">
+									<th>{{ $index }}</th>
+									<td>{{ payment.gross | moneys }}</td>
+									<td>{{ payment.take_home | moneys }}</td>
+									<td>{{ payment.tax | moneys }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
 				<!-- Loan -->
 				<div class="card">
 					<h2>

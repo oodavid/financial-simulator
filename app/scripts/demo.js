@@ -7,7 +7,7 @@
  */
 (function(){
     angular.module('fateful')
-    .controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'financeService', 'ledgerService', function ($scope, gameLoop, Loan, financeService, ledgerService){
+    .controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'Salary', 'financeService', 'ledgerService', function ($scope, gameLoop, Loan, Salary, financeService, ledgerService){
 
         $scope.liabilities = [
             { name: 'house',   value: '240000', loan: { type: 'interest-only', interest: 3, term: 240 } }, // 20 years * 12 months
@@ -37,6 +37,11 @@
         $scope.loan.on('paid', function(){
             gameLoop.pause();
             console.log(this.name + ' paid off.\n\nI paused the game for you.');
+        });
+        // Create a demo Salary object
+        $scope.salary = new Salary({
+            name: 'My Job',
+            amount: 18000,
         });
         //
         // Test the gameLoop events
