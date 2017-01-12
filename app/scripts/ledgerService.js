@@ -7,16 +7,27 @@
  *      @author   David 'oodavid' King
  */
 (function(){
-	angular.module('fateful')
-	.service('ledgerService', ['gameLoop', function(gameLoop){
-	    var _this = this;
-	    this.ledger = [];
-	    this.track = function(props){
-	        // Clone and modify the object
-	        var _props = angular.copy(props);
-	        _props.date = new Date(gameLoop.date);
-	        // Add to the ledger
-	        _this.ledger.push(_props);
-	    };
-	}]);
+    angular.module('fateful')
+    .service('ledgerService', ['gameLoop', function(gameLoop){
+        var _this = this;
+        this.balance = 0;
+        this.ledger = [];
+        this.track = function(type, name, value){
+            if(value){
+                var IN  = value > 0 ?  value : null;
+                var OUT = value < 0 ? -value : null;
+                this.balance += value;
+                var props = {
+                    date: gameLoop.date,
+                    type: type,
+                    name: name,
+                    in: IN,
+                    out: OUT,
+                    balance: this.balance,
+                }
+                // Add to the ledger
+                _this.ledger.push(props);
+            }
+        };
+    }]);
 })();

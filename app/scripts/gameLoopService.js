@@ -29,11 +29,12 @@
         //
         // Date tracking
         //
-        this.date = new Date(); // Current Date (elapsed)
-        this.date.setDate(1);
-        this.date.setHours(12);
-        this.date.setMinutes(0);
-        this.date.setSeconds(0);
+        var currentDate = new Date(); // Current Date (elapsed)
+        currentDate.setDate(1);
+        currentDate.setHours(12);
+        currentDate.setMinutes(0);
+        currentDate.setSeconds(0);
+        this.date       = null;  // Current Date (string, "Jun 2019")
         this.dob        = null;  // Date of Birth
         this.age        = null;  // Current Age in Months
         this.retirement = null;  // Number of months till retirement
@@ -43,7 +44,8 @@
         // Calculates the age and remaining
         var recalculateDates = function(){
             // Age
-            var monthsA = (_this.date.getYear()*12) + _this.date.getMonth();
+            _this.date = $filter('date')(currentDate, 'MMM yyyy');
+            var monthsA = (currentDate.getYear()*12) + currentDate.getMonth();
             var monthsB = (_this.dob.getYear()*12)  + _this.dob.getMonth();
             _this.age = monthsA - monthsB;
             // Remaining
@@ -80,7 +82,7 @@
         var doTick = function(){
             if(!hasEnded){
                 _this.elapsed ++;
-                _this.date.setMonth(_this.date.getMonth()+1);
+                currentDate.setMonth(currentDate.getMonth()+1);
                 recalculateDates();
                 _this.trigger('tick');
                 if(_this.remaining <= 0){

@@ -32,19 +32,20 @@
         function Loan(props){
             var _this = this;
             // Basic settings
-            this.name        = props.name;
-            this.amount      = props.amount;
-            this.apr         = props.apr;
-            this.term        = props.term;
-            this.start       = new Date(gameLoop.date);
+            this.name         = props.name;
+            this.amount       = props.amount;
+            this.apr          = props.apr;
+            this.term         = props.term;
+            this.start        = gameLoop.date;
             this.basicPayment = -financeService.PMT(this.apr/12, this.term, this.amount);
             // The log and running totals
             this.payments    = [];
             this.lastPayment = null; // Pointer to the last payment object
             this.total = {
-                payment:   0, // Total amount paid
-                principal: 0, // ...of which was principal
-                interest:  0, // ...of which was interest
+                payment:     0,            // Total amount paid
+                principal:   0,            // ...of which was principal
+                interest:    0,            // ...of which was interest
+                outstanding: props.amount, // Amount outstanding
             };
             // User settings
             this.regularOverpayment = 0; // Recurring overpayment amount - added to every monthly payment
@@ -85,6 +86,7 @@
             }
             // Add to our payments list
             this.lastPayment = {
+                date: gameLoop.date,
                 start_balance: start_balance,
                 payment: payment,
                 interest: interest,
@@ -97,13 +99,9 @@
             this.total.payment += payment + overpayment;
             this.total.principal += principal;
             this.total.interest += interest;
+            this.total.outstanding = this.amount - this.total.principal;
             // Add the changes to the ledger
-            ledgerService.track({
-                type: 'loan',
-                name: this.name,
-                value: (payment+overpayment),
-                interest: interest
-            });
+            ledgerService.track('loan', this.name, -(payment + overpayment));
             // Add to the chart
             this.addChartRow(this.lastPayment);
         };
@@ -203,7 +201,7 @@
         Loan.prototype.addChartRow = function(payment){
             this.num ++; // Grab the next row
             this.chart.data[this.num] = [
-                this.num, // Don't use a date Object; they're too expensive
+                payment.date,
                 payment.interest,
                 (payment.principal < 0 ? 0 : payment.principal), // When taking a payment holiday, the graph looks confusing when the principal is -ve
                 payment.end_balance,

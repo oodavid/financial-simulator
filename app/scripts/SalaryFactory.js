@@ -39,11 +39,7 @@
             // Update our totals
             this.total += paycheck;
             // Add the changes to the ledger
-            ledgerService.track({
-                type:  'salary',
-                name:  this.name,
-                value: paycheck
-            });
+            ledgerService.track('salary', this.name, paycheck);
         };
         // Applies a monthly paycheck
         Salary.prototype.applyMonthlyPaycheck = function(){

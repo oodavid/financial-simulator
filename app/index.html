@@ -28,8 +28,7 @@
 				<div class="card">
 					<h2>
 						<span class="glyphicon glyphicon-globe" ng-tooltip="Money maketh man\nManners maketh Gentleman"></span>
-						<span class="mono">{{ loop.date | date : 'MMM' }}</span>
-						{{ loop.date | date : 'yyyy' }}
+						{{ loop.date }}
 					</h2>
 					<div>
 						<!-- Controls -->
@@ -85,7 +84,7 @@
 					</h2>
 					<!-- Bank :: Overview -->
 					<div>
-						<h3>{{ 14872 | moneys }}</h3>
+						<h3>{{ ledger.balance | moneys }}</h3>
 						<!--div google-chart chart="loan.chart" style="height: 300px;"></div-->
 						<!-- Quick Calculation -->
 						<hr>
@@ -203,6 +202,39 @@
 			</div>
 			<div class="col-md-8">
 
+				<!-- Ledger -->
+				<div class="card">
+					<h2>
+						<span class="glyphicon glyphicon-equalizer" ng-tooltip="Accounting. Act, count, think"></span>
+						Ledger
+					</h2>
+					<div>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Type</th>
+									<th>Name</th>
+									<th>In</th>
+									<th>Out</th>
+									<th>Balance</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="entry in ledger.ledger">
+									<td>{{ entry.date }}</td>
+									<td>{{ entry.type }}</td>
+									<td>{{ entry.name }}</td>
+									<td>{{ entry.in | moneys }}</td>
+									<td>{{ entry.out | moneys }}</td>
+									<td>{{ entry.balance | moneys }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
 				<!-- Salary -->
 				<div class="card">
 					<h2>
@@ -256,6 +288,7 @@
 									<th>Total Paid</th>
 									<th>Principal</th>
 									<th>Interest</th>
+									<th>Outstanding</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -268,6 +301,7 @@
 									<td>{{ loan.total.payment | currency }}</td>
 									<td>{{ loan.total.principal | currency }}</td>
 									<td>{{ loan.total.interest | currency }}</td>
+									<td>{{ loan.total.outstanding | currency }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -276,9 +310,9 @@
 
 						<p>
 							Set Recurring Overpayment to:
-							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 0 }" ng-click="loan.setRecurringOverpayment(0);">{{ 0 | currency }}</button>
-							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 200 }" ng-click="loan.setRecurringOverpayment(200);">{{ 200 | currency }}</button>
-							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.overpayment == 500 }" ng-click="loan.setRecurringOverpayment(500);">{{ 500 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.regularOverpayment == 0 }" ng-click="loan.setRecurringOverpayment(0);">{{ 0 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.regularOverpayment == 200 }" ng-click="loan.setRecurringOverpayment(200);">{{ 200 | currency }}</button>
+							<button class="btn btn-default" ng-class="{ 'btn-primary': loan.regularOverpayment == 500 }" ng-click="loan.setRecurringOverpayment(500);">{{ 500 | currency }}</button>
 						</p>
 						<p>
 							Make One-Off Overpayment:
@@ -306,7 +340,7 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="payment in loan.payments">
-									<th>{{ $index }}</th>
+									<td>{{ payment.date }}</td>
 									<td>{{ payment.start_balance | moneys }}</td>
 									<td>{{ payment.payment | moneys }}</td>
 									<td>{{ payment.interest | moneys }}</td>
@@ -350,23 +384,17 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2022
-									</td>
+									<td>Jan 2022</td>
 									<td class="text">Promotion</td>
 									<td class="text">Results in a payrise</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2025
-									</td>
+									<td>Jan 2025</td>
 									<td class="text">Wedding</td>
 									<td class="text">A one-off expense, that results in a joint income</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2029
-									</td>
+									<td>Jan 2029</td>
 									<td class="text">Job Hunt</td>
 									<td class="text">
 										You lose your job, no income for 6 months
@@ -374,16 +402,12 @@
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2026
-									</td>
+									<td>Jan 2026</td>
 									<td class="text">Promotion</td>
 									<td class="text">Results in a payrise</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2027
-									</td>
+									<td>Jan 2027</td>
 									<td class="text">Inheritance</td>
 									<td class="text">
 										Gain a lump sum
@@ -391,23 +415,17 @@
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2029
-									</td>
+									<td>Jan 2029</td>
 									<td class="text">Baby</td>
 									<td class="text">Your joint income is reduced, and you your expenses increase over time</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2032
-									</td>
+									<td>Jan 2032</td>
 									<td class="text">Promotion</td>
 									<td class="text">Results in a payrise</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2029
-									</td>
+									<td>Jan 2029</td>
 									<td class="text">Divorce</td>
 									<td class="text">
 										Your joint income is removed, sell your house and split the difference
@@ -415,9 +433,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<span class="mono">Jan</span> 2052
-									</td>
+									<td>Jan 2052</td>
 									<td class="text">Retirement</td>
 									<td class="text">Will you sail into the sunset, or live in abject poverty?</td>
 								</tr>
@@ -425,41 +441,6 @@
 						</table>
 					</div>
 				</div>
-
-
-				<!-- Ledger -->
-				<div class="card">
-					<h2>
-						<span class="glyphicon glyphicon-equalizer" ng-tooltip="Accounting. Act, count, think"></span>
-						Ledger
-					</h2>
-					<div>
-						<table>
-							<thead>
-								<tr>
-									<th>Date</th>
-									<th>Type</th>
-									<th>Name</th>
-									<th>Value</th>
-									<th>Interest</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="entry in ledger.ledger">
-									<td>
-										<span class="mono">{{ entry.date | date : 'MMM' }}</span>
-										{{ entry.date | date : 'yyyy' }}
-									</td>
-									<td>{{ entry.type }}</td>
-									<td>{{ entry.name }}</td>
-									<td>{{ entry.value | moneys }}</td>
-									<td>{{ entry.interest | moneys }}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
 
 			</div>
 		</div>
