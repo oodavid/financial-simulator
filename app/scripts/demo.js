@@ -40,8 +40,8 @@
         });
         // Create a demo Salary object
         $scope.salary = new Salary({
-            name: 'My Job',
-            amount: 18000,
+            name:   'My Job',
+            salary: 18000,
         });
         //
         // Test the gameLoop events

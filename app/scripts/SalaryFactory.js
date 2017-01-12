@@ -4,16 +4,11 @@
  *  Salaries earn a fixed income every month.
  *
  *      Properties
- *          loan.chart  -  Google Chart Data Object
  *          See init logic for others
  *
  *      Methods
- *          new Salary({ name, salary })  -  Initializes the loan
+ *          new Salary({ name, salary })  -  Initializes the salary
  *          salary.setAmount(salary)      -  Changes the value of the salary
- *
- *  TODO
- *
- *      Tax
  *
  *      @author   David 'oodavid' King
  */
@@ -23,115 +18,43 @@
         // Instantiation
         function Salary(props){
             var _this = this;
-            // Basic settings
-            this.name   = props.name;
-            this.salary = props.salary;
             // The log and running totals
-            this.payments    = [];
-            this.lastPayment = null; // Pointer to the last payment object
-            this.total = {
-                gross: gross,           // Total amount paid
-                take_home: (gross-tax), // ...of which we took home
-                tax: tax,               // ...of which was tax
-            };
-            // Initialize the chart  
-            this.initChart();
+            this.payments = [];
+            this.paycheck = null; // The most recent paycheck
+            this.total = 0;
+            // Basic settings
+            this.name = props.name;
+            this.setSalary(props.salary);
             // Get the paycheck on every tick
             var task = gameLoop.on('tick', function(){
-                _this.getMonthlyPaycheck();
+                _this.applyMonthlyPaycheck();
             });
         };
-        // Adds a payment
-        Loan.prototype.addPayment = function(gross, tax){
-            var take_home = (gross-tax);
+        // Adds a paycheck
+        Salary.prototype.addPaycheck = function(paycheck){
+            console.log('addPaycheck');
             // Add to our payments list
-            this.lastPayment = {
-                gross: gross,
-                take_home: take_home,
-                tax: tax,
-            };
-            this.payments.push(this.lastPayment);
+            this.paycheck = paycheck;
+            this.payments.push(this.paycheck);
             // Update our totals
-            this.total.gross     += gross;
-            this.total.take_home += take_home;
-            this.total.tax       += tax;
+            this.total += paycheck;
             // Add the changes to the ledger
             ledgerService.track({
-                type: 'salary',
-                name: this.name,
-                value: take_home,
-                tax: tax
+                type:  'salary',
+                name:  this.name,
+                value: paycheck
             });
-            // Add to the chart
-            this.addChartRow(this.lastPayment);
         };
-        // Gets the monthly paycheck
-        Salary.prototype.getMonthlyPaycheck = function(){
-            // Calculate the gross income and tax
-            var gross = this.salary / 12;
-            var tax = 0;
-            // Add the payment
-            this.addPayment(gross, tax);
+        // Applies a monthly paycheck
+        Salary.prototype.applyMonthlyPaycheck = function(){
+            console.log('applyMonthlyPaycheck');
+            this.addPaycheck(this.paycheck);
         };
         // Changes the salary
         Salary.prototype.setSalary = function(salary){
-            this.salary = salary;
-        };
-        // Initializes the chart object
-        Salary.prototype.initChart = function(){
-            this.chart = {
-                type: "AreaChart",
-                displayed: false,
-                data: [
-                    ['Number', 'Tax', 'Take Home'],
-                ],
-                options: {
-                    isStacked: "true",
-                    displayExactValues: true,
-                    vAxis: {
-                        minValue: 0,
-                        maxValue: (this.salary / 10),
-                        gridlines: {
-                            count: 6,
-                            color: '#EEEEEE'
-                        },
-                    },
-                    hAxis: {
-                        gridlines: {
-                            count: 10
-                        },
-                        format: 'decimal'
-                    },
-                    legend: { 'position': 'top' },
-                    colors: ['#d9534f', '#337ab7'],
-                    lineWidth: 1,
-                },
-                formatters: {
-                    number : [{
-                        columnNum: 1,
-                        pattern: "$ #,##0.00"
-                    }]
-                }
-            };
-            // Pre-populate with zeros
-            this.num = 0;
-            for(var p=0; p<=this.term; p++){
-                this.chart.data.push([
-                    p,
-                    0,
-                    0,
-                    0,
-                ]);
-            }
-        };
-        // Adds a row to the chart
-        Salary.prototype.addChartRow = function(payment){
-            this.num ++; // Grab the next row
-            this.chart.data[this.num] = [
-                this.num, // Don't use a date Object; they're too expensive
-                payment.tax,
-                payment.take_home,
-            ];
+            console.log('setSalary');
+            this.salary   = salary;
+            this.paycheck = salary / 12;
         };
         // Return the Salary object
         return Salary;

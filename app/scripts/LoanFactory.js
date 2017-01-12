@@ -140,7 +140,6 @@
         Loan.prototype.initChart = function(){
             this.chart = {
                 type: "ComboChart",
-                displayed: false,
                 data: [
                     ['Number', 'Interest', 'Principal', 'Balance'],
                 ],
