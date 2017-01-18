@@ -84,7 +84,10 @@
 					</h2>
 					<!-- Bank :: Overview -->
 					<div>
-						<h3>{{ ledger.balance | moneys }}</h3>
+						<h3>
+							{{ ledger.balance | moneys }}
+							<small>{{ ledger.diff | moneys }}</small>
+						</h3>
 						<!--div google-chart chart="loan.chart" style="height: 300px;"></div-->
 						<!-- Quick Calculation -->
 						<hr>

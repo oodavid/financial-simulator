@@ -7,8 +7,25 @@
      88     Y8a.    .a8P  88      .a8P   Y8a.    .a8P
      88      `"Y8888Y"'   88888888Y"'     `"Y8888Y"'
 
-	Ledger
-		Consider how this needs to work
+    Income Allocation
+    	Allocate all income
+    		Rent
+    		Bills
+    		Mortgage
+    		Car
+    		etc.
+    	Need options for "unspent" money
+    		Put 50% in savings account
+    		Put 50% in bonds
+    	Warn me when "unspent" >= 1000 pcm
+    		(later)
+
+    Leftovers
+    	To prevent cash just piling up, we need to assume that anything unaccounted
+    	 just gets spent on "stuff"
+    	We need a "Savings Account":
+    		Anything unspent goes into savings
+    		Add alarms - 'alarm at 10k' - to prompt something like a deposit
 
     Timeline
     	Hook onto the gameLoop
@@ -67,6 +84,9 @@ d8'          d8'        `8b 88`8b       d8'88 88      ,8P 88          88        
 Y8,          Y8,        ,8P 88   `8b d8'   88 88          88          88               88      88
  Y8a.    .a8P Y8a.    .a8P  88    `888'    88 88          88          88               88      88
   `"Y8888Y"'   `"Y8888Y"'   88     `8'     88 88          88888888888 88888888888      88      88888888888
+
+	Ledger
+		Consider how this needs to work
 
     Salary
     	New Service
