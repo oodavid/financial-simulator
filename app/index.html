@@ -155,19 +155,29 @@
 				</div>
 
 
+				<!-- Portfolio -->
+				<div class="card" ng-controller="RadarCtrl">
+					<h2>
+						<span class="glyphicon glyphicon-book" ng-tooltip="Bet the spread."></span>
+						Portfolio Diversity
+					</h2>
+				</div>
 
 
-				<!-- Liabilities -->
+
+
+
+
+			</div>
+			<div class="col-md-8">
+
+				<!-- Control Panel -->
 				<div class="card">
 					<h2>
-						<span class="glyphicon glyphicon-glass" ng-tooltip="Much obliged"></span>
-						Liabilities
+						<span class="glyphicon glyphicon-equalizer" ng-tooltip="Accounting. Act, count, think"></span>
+						Control Panel
 					</h2>
 					<div>
-						<h3>{{ 1690 | moneys }}</h3>
-						<p>This should be coupled with a graph</p>
-						<hr>
-						<p>When clicked, show a breakdown</p>
 						<table>
 							<thead>
 								<tr>
@@ -184,26 +194,115 @@
 								</tr>
 							</tbody>
 						</table>
+						<p>
+							<div class="btn-group btn-group-justified">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-tooltip="Rent or Buy somewhere to live">
+										<span class="glyphicon glyphicon-home"></span>
+										Home
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" ng-click="alert('Rent or Buy? ...if we don't have the deposit, set a savings goal')">
+										<li>
+											<a href="#" ng-tooltip="Getting on the Ladder" ng-tooltip-placement="right">
+												100k - Flat
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="You're good at adulting" ng-tooltip-placement="right">
+												250k - House
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="Fancy a turn about the room?" ng-tooltip-placement="right">
+												1m - Mansion
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-tooltip="Buy or Lease a Car">
+										<span class="glyphicon glyphicon-road"></span>
+										Car
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" ng-click="alert('Buy or Lease?')">
+										<li>
+											<a href="#" ng-tooltip="3 Seats and Economical" ng-tooltip-placement="right">
+												3k - Hatchback
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="Room for the Bairns" ng-tooltip-placement="right">
+												10k - Estate
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="...and their Sports Gear" ng-tooltip-placement="right">
+												20k - SUV
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-tooltip="Add an annual holiday">
+										<span class="glyphicon glyphicon-glass"></span>
+										Holiday
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" ng-click="alert('Just add it')">
+										<li>
+											<a href="#" ng-tooltip="Soggy feet" ng-tooltip-placement="right">
+												<span class="glyphicon glyphicon-tent"></span>
+												1k - Camping
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="Sleep when you're dead" ng-tooltip-placement="right">
+												<span class="glyphicon glyphicon-flag"></span>
+												3k - Skiing
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="Lap of luxury" ng-tooltip-placement="right">
+												<span class="glyphicon glyphicon-sunglasses"></span>
+												5k - Jetsetting
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-tooltip="Met someone?">
+										<span class="glyphicon glyphicon-heart"></span>
+										Lifestyle
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" ng-click="alert('Buy if we have the Cash, or add a savings goal')">
+										<li>
+											<a href="#" ng-tooltip="Just get it over and done with" ng-tooltip-placement="right">
+												<span class="glyphicon glyphicon-heart"></span>
+												5k - Shotgun Wedding
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="The contract that costs 30k" ng-tooltip-placement="right">
+												<span class="glyphicon glyphicon-heart"></span>
+												30k - Average Wedding
+											</a>
+										</li>
+										<li>
+											<a href="#" ng-tooltip="You'll be the belle of the ball!" ng-tooltip-placement="right">
+												<span class="glyphicon glyphicon-heart"></span>
+												80k - Luxury Wedding
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</p>
+						<div google-chart chart="myChart" style="height: 300px;"></div>
 					</div>
 				</div>
-
-
-
-				<!-- Portfolio -->
-				<div class="card" ng-controller="RadarCtrl">
-					<h2>
-						<span class="glyphicon glyphicon-book" ng-tooltip="Bet the spread."></span>
-						Portfolio Diversity
-					</h2>
-				</div>
-
-
-
-
-
-
-			</div>
-			<div class="col-md-8">
 
 				<!-- Ledger -->
 				<div class="card">

@@ -120,11 +120,13 @@ table {
 
 
 
-#loop-controls {
+.btn-group {
     .btn {
         padding-left: 0;
         padding-right: 0;
     }
+}
+#loop-controls {
     .glyphicon + .glyphicon {
         margin-left: -10px;
     }

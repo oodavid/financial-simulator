@@ -52,7 +52,7 @@
             this.oneOffOverpayment  = 0; // One-Off overpayment amount - added to the NEXT monthly payment
             this.paymentHoliday     = 0; // Number of months to skip
             // This is an Event Emitter
-            emitterService.addLogicTo(this);
+            emitterService.addEmitterLogicTo(this);
             // Initialize the chart  
             this.initChart();
             // Make a payment for every tick

@@ -9,6 +9,28 @@
     angular.module('fateful')
     .controller("DemoCtrl", ['$scope', 'gameLoop', 'Loan', 'Salary', 'financeService', 'ledgerService', function ($scope, gameLoop, Loan, Salary, financeService, ledgerService){
 
+
+
+
+        //
+        // Outgoings
+        //
+        $scope.myChart = {
+            type: "PieChart",
+            data: [
+                ['Outgoing', 'Value'],
+                ['House',    650],
+                ['Car',      300],
+                ['Holiday',  4000/12],
+                ['Savings',  200]
+            ],
+            options: {
+                pieHole: 0.2,
+                pieSliceText: 'label',
+                legend: 'none',
+               'chartArea': {'width': '100%', 'height': '80%'},
+            }
+        };
         $scope.liabilities = [
             { name: 'house',   value: '240000', loan: { type: 'interest-only', interest: 3, term: 240 } }, // 20 years * 12 months
             { name: 'car',     value:  '12000', loan: { type: 'repayment',     interest: 5, term: 12 } },
@@ -16,6 +38,22 @@
             { name: 'wedding', value:  '30000', loan: { type: 'repayment',     interest: 4, term: 24 } },
             { name: 'baby a',  value:    '300', loan: { type: 'repayment',     interest: 4, term: 24 } },
         ];
+        $scope.addHome = function(){
+
+        };
+        $scope.addCar = function(){
+
+        };
+        $scope.addHoliday = function(){
+
+        };
+
+
+
+
+
+
+
         // Income & Assets 
         $scope.assets = [
             { name: 'salary', value: '1200' }

@@ -25,7 +25,7 @@
         //
         // Event Emitter
         //
-        emitterService.addLogicTo(this);
+        emitterService.addEmitterLogicTo(this);
         //
         // Date tracking
         //
